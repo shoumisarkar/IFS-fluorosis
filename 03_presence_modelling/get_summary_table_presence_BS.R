@@ -26,7 +26,7 @@ get_CI <- function(confidence_level = 0.95, BS_dat, vars) {
 
 
 # Helper function to write CI results to Excel
-write_CI_to_excel <- function(my_list, corstr_pres, conf_level) {
+write_table_to_excel <- function(my_list, corstr_pres, conf_level) {
   wb <- createWorkbook()
   
   for (name in names(my_list)) {
@@ -57,7 +57,7 @@ process_age_data <- function(age, B, corstr_pres, get_CI, vars) {
 }
 
 # Main logic
-corstr_pres <- "jackknifed"
+corstr_pres <- "exchangeable"
 ages <- c(9, 13, 17, 23)
 B <- 120
 vars <- c("dental_age", "Total_mgF", "SugarAddedBeverageOzPerDay", "BrushingFrequencyPerDay",
@@ -146,7 +146,7 @@ for(var in vars)
     age_ind = which(ages %in% age)
     
     stdcoef = (coef_pres_list[[age_ind]])$Estimates[var_ind]/
-                  (se_pres_list[[age_ind]])$SD[var_ind]
+      (se_pres_list[[age_ind]])$SD[var_ind]
     
     t = c(t, stdcoef)
   }
@@ -156,7 +156,7 @@ for(var in vars)
   for(age in ages)
   {
     age_ind = which(ages %in% age)
-
+    
     postJS_stdcoef_pres_list[[age_ind]]$Estimates[var_ind] = js_output[age_ind] #update in the JS estimates
   }
   
@@ -167,7 +167,7 @@ for(var in vars)
 
 create_summary_table = function(level=95)
 {
- 
+  
   preJS_CI = preJS_CI_90
   postJS_CI = postJS_CI_90
   
@@ -183,13 +183,20 @@ create_summary_table = function(level=95)
   {
     age_ind = which(ages %in% age)
     
-    
     preJS_CI_int =
       paste0( "(",
               format(round(preJS_CI[[age_ind]]$LCL,3), nsmall=3), ", ",
               format(round(preJS_CI[[age_ind]]$UCL,3), nsmall=3),
               ")"
       )
+    
+    # Determine significance and direction symbols
+    ind_preJS_signif <- preJS_CI[[age_ind]]$LCL * preJS_CI[[age_ind]]$UCL > 0
+    preJS_signif <- ifelse(ind_preJS_signif, "*", "")
+    preJS_direction <- ifelse(coef_pres_list[[age_ind]]$Estimates > 0, "+", "-")
+    preJS_symbol <- ifelse(ind_preJS_signif, paste0("$^{", preJS_signif, preJS_direction, "}$"), "")
+    preJS_CI_int <- paste0(preJS_CI_int, preJS_symbol)
+    
     
     
     postJS_CI_int =
@@ -200,6 +207,11 @@ create_summary_table = function(level=95)
       )
     
     
+    ind_postJS_signif <- postJS_CI[[age_ind]]$LCL * postJS_CI[[age_ind]]$UCL > 0
+    postJS_signif <- ifelse(ind_postJS_signif, "*", "")
+    postJS_direction <- ifelse(coef_pres_list[[age_ind]]$Estimates > 0, "+", "-")
+    postJS_symbol <- ifelse(ind_postJS_signif, paste0("$^{", postJS_signif, postJS_direction, "}$"), "")
+    postJS_CI_int <- paste0(postJS_CI_int, postJS_symbol)
     
     temp_df  = data.frame(Variable=rownames(se_pres_list$age9),
                           Estimate=format(round((coef_pres_list[[age_ind]])$Estimates, 3), nsmall=3),
@@ -208,10 +220,10 @@ create_summary_table = function(level=95)
                           StdCI=preJS_CI_int,
                           JS_StdEstimate = format(round(postJS_stdcoef_pres_list[[age_ind]]$Estimates, 3), nsmall=3),
                           JS_StdCI=postJS_CI_int)
-  
+    
     colnames(temp_df) = c("Variable", "Estimate", "Standard Error", "Standarized Estimate",
                           "Standardized CI", "James-Stein Standardized Estimate", "James-Stein Standardized CI")
-      
+    
     summary_pres[[age_ind]] = temp_df
   }
   
@@ -220,5 +232,88 @@ create_summary_table = function(level=95)
   return(summary_pres)
 }
 
-write_CI_to_excel(create_summary_table(95), corstr_pres, 95)
-write_CI_to_excel(create_summary_table(90), corstr_pres, 90)
+
+
+# Create summary tables with 95% CI and 90% CI
+summary_95 <- create_summary_table(95)
+summary_90 <- create_summary_table(90)
+
+
+write_table_to_excel(summary_95, corstr_pres, 95)
+write_table_to_excel(summary_90, corstr_pres, 90)
+
+
+#Write latex tables:
+
+library(xtable)
+
+write_table_to_latex <- function(my_list, corstr_pres, conf_level) {
+  # Create a .tex file to store the output
+  tex_file <- paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/03_presence_modelling/", conf_level, "_table_", corstr_pres, ".tex")
+  sink(tex_file)
+  
+  corstr_index = which(c("independence", "exchangeable", "ar1", "jackknifed") %in% corstr_pres)
+  
+  #Model name: A.1.1 means A independence age
+  caption_text <- paste0("Estimates from models A.", corstr_index, ".1-A.", corstr_index, ".4, the separate presence models with the ",
+                         corstr_pres, " cluster correlation structure")
+  
+  # gsub("age", "", name)
+  
+  #cat("\\section*{", name, "}\n")
+  cat("\\begin{table}[ht]\n")
+  cat("\\label{table:sep:pres:", corstr_pres, "}\n", sep="")
+  cat("\\centering\n")
+  cat("\\caption{", caption_text, "}\n")
+  cat("\\begin{threeparttable}\n")
+  cat("\\centering\n")
+  
+  # Add the required LaTeX package
+  #cat("\\usepackage{threeparttable}\n\n")
+  
+  # Loop through the list of data frames (tables)
+  for (name in names(my_list)) {
+      
+    age = gsub("age", "", name); age_index = which(ages %in% age)
+    
+    
+    cat("%Table for", name,"\n")
+    
+    
+    cat("\\begin{subtable}{\\linewidth}\n")
+    cat("\\centering\n")
+    cat("\\caption{Model A.", corstr_index, ".", age_index, " (age ",age,")}\n", sep="")
+    cat("\\scalebox{0.85}{\n")
+    cat("\\begin{tabular}{rlcccccl}\n")
+    
+    #cat("\\hline\n")
+    cat("Variable & Estimate & SE & \\makecell{Standardized\\\\Estimate} & 95\\% CI & \\makecell{James-Stein\\\\Estimate} & \\makecell{95\\% CI\\\\(James-Stein)} \\\\\n")
+    
+    # Print the table body without column names
+    print(xtable(my_list[[name]], align = c("r", "l", "c", "c", "c", "c", "c", "l")), 
+          include.rownames = FALSE, include.colnames = FALSE, type = "latex", only.contents = TRUE)
+    
+    cat("\\end{tabular}\n")
+    cat("}\n")
+    cat("\\end{subtable}\n")
+    
+  }
+  
+  # Add custom notes at the end of the table
+  cat("\\begin{tablenotes}[para,flushleft]\n")
+  cat("\\scriptsize\n")
+  cat("\\item Superscripts $*+$ and $*-$ denote significant positive and negative effects at the 5\\% significance level, respectively.\n")
+  cat("\\end{tablenotes}\n")
+  
+  cat("\\end{threeparttable}\n")
+  cat("\\end{table}\n\n")
+  
+  # Stop writing to the .tex file
+  sink()
+}
+
+
+# Write the 95% CI and 90% CI tables to LaTeX
+write_table_to_latex(my_list = summary_95, corstr_pres = corstr_pres, conf_level = 95)
+write_table_to_latex(summary_90, corstr_pres, 90)
+
