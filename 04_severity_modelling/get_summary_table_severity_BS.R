@@ -26,7 +26,7 @@ get_CI <- function(confidence_level = 0.95, BS_dat, vars) {
 
 
 # Helper function to write CI results to Excel
-write_CI_to_excel <- function(CI_list, corstr_sev, conf_level) {
+write_table_to_excel <- function(CI_list, corstr_sev, conf_level) {
   wb <- createWorkbook()
   
   for (name in names(CI_list)) {
@@ -57,7 +57,7 @@ process_age_data <- function(age, B, corstr_sev, get_CI, vars) {
 }
 
 # Main logic
-corstr_sev <- "independence"
+corstr_sev <- "jackknifed"
 ages <- c(9, 13, 17, 23)
 B <- 120
 vars <- c("dental_age", "Total_mgF", "SugarAddedBeverageOzPerDay", "BrushingFrequencyPerDay",
@@ -189,6 +189,13 @@ create_summary_table = function(level=95)
               ")"
       )
     
+    # Determine significance and direction symbols
+    ind_preJS_signif <- preJS_CI[[age_ind]]$LCL * preJS_CI[[age_ind]]$UCL > 0
+    preJS_signif <- ifelse(ind_preJS_signif, "*", "")
+    preJS_direction <- ifelse(coef_sev_list[[age_ind]]$Estimates > 0, "+", "-")
+    preJS_symbol <- ifelse(ind_preJS_signif, paste0("$^{", preJS_signif, preJS_direction, "}$"), "")
+    preJS_CI_int <- paste0(preJS_CI_int, preJS_symbol)
+    
     
     postJS_CI_int =
       paste0( "(",
@@ -197,6 +204,12 @@ create_summary_table = function(level=95)
               ")"
       )
     
+    
+    ind_postJS_signif <- postJS_CI[[age_ind]]$LCL * postJS_CI[[age_ind]]$UCL > 0
+    postJS_signif <- ifelse(ind_postJS_signif, "*", "")
+    postJS_direction <- ifelse(coef_sev_list[[age_ind]]$Estimates > 0, "+", "-")
+    postJS_symbol <- ifelse(ind_postJS_signif, paste0("$^{", postJS_signif, postJS_direction, "}$"), "")
+    postJS_CI_int <- paste0(postJS_CI_int, postJS_symbol)
     
     
     temp_df  = data.frame(Variable=rownames(se_sev_list$age9),
@@ -218,5 +231,81 @@ create_summary_table = function(level=95)
   return(summary_sev)
 }
 
-write_CI_to_excel(create_summary_table(95), corstr_sev, 95)
-write_CI_to_excel(create_summary_table(90), corstr_sev, 90)
+summary_95 = create_summary_table(95)
+summary_90 = create_summary_table(90)
+
+write_table_to_excel(summary_95, corstr_sev, 95)
+write_table_to_excel(summary_90, corstr_sev, 90)
+
+#Write latex tables:
+
+library(xtable)
+
+write_table_to_latex <- function(my_list, corstr_sev, conf_level) {
+  # Create a .tex file to store the output
+  tex_file <- paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/04_severity_modelling/", conf_level, "_table_", corstr_sev, ".tex")
+  sink(tex_file)
+  
+  corstr_index = which(c("independence", "exchangeable", "ar1", "jackknifed") %in% corstr_sev)
+  
+  #Model name: A.1.1 means A independence age
+  caption_text <- paste0("Estimates from models B.", corstr_index, ".1-B.", corstr_index, ".4, the separate severity models with the ",
+                         corstr_sev, " cluster correlation structure")
+  
+  # gsub("age", "", name)
+  
+  #cat("\\section*{", name, "}\n")
+  cat("\\begin{table}[ht]\n")
+  cat("\\label{table:sep:sev:", corstr_sev, "}\n", sep="")
+  cat("\\centering\n")
+  cat("\\caption{", caption_text, "}\n")
+  cat("\\begin{threeparttable}\n")
+  cat("\\centering\n")
+  
+  # Add the required LaTeX package
+  #cat("\\usepackage{threeparttable}\n\n")
+  
+  # Loop through the list of data frames (tables)
+  for (name in names(my_list)) {
+    age = gsub("age", "", name); age_index = which(ages %in% age)
+    
+    cat("%Table for", name,"\n")
+    
+    cat("\\begin{subtable}{\\linewidth}\n")
+    cat("\\centering\n")
+    cat("\\caption{Model B.", corstr_index, ".", age_index, " (age ",age,")}\n", sep="")
+    cat("\\scalebox{0.85}{\n")
+    cat("\\begin{tabular}{rlcccccl}\n")
+    
+    #cat("\\hline\n")
+    
+    cat("Variable & Estimate & SE & \\makecell{Standardized\\\\Estimate} & 95\\% CI & \\makecell{James-Stein\\\\Estimate} & \\makecell{95\\% CI\\\\(James-Stein)} \\\\\n")
+    
+    # Print the table body without column names
+    print(xtable(my_list[[name]], align = c("r", "l", "c", "c", "c", "c", "c", "l")), 
+          include.rownames = FALSE, include.colnames = FALSE, type = "latex", only.contents = TRUE)
+    
+    cat("\\end{tabular}\n")
+    cat("}\n")
+    cat("\\end{subtable}\n")
+  
+  }
+  
+  # Add custom notes at the end of the table
+  cat("\\begin{tablenotes}[para,flushleft]\n")
+  cat("\\scriptsize\n")
+  cat("\\item Superscripts $*+$ and $*-$ denote significant positive and negative effects at the 5\\% significance level, respectively.\n")
+  cat("\\end{tablenotes}\n")
+  
+  cat("\\end{threeparttable}\n")
+  cat("\\end{table}\n\n")
+  
+  # Stop writing to the .tex file
+  sink()
+}
+
+
+# Write the 95% CI and 90% CI tables to LaTeX
+write_table_to_latex(summary_95, corstr_sev, 95)
+write_table_to_latex(summary_90, corstr_sev, 90)
+
