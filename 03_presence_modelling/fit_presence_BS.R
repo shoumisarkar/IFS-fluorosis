@@ -72,7 +72,7 @@ if(!file.exists(filename)) #run only if the referenced output file does not exis
   if(length(unique(IFS_dat_BS$FRI_Score))==4)
   {
     
-    fit = fit_GEE_presence(IFS_dat_BS, corstr_pres=corstr_pres)
+    fit = fit_GEE_presence(IFS_dat_BS, corstr_pres=corstr_pres, maxIter = 100)
     
     coef_pres = fit$coefs
     
@@ -114,7 +114,7 @@ if(!file.exists(filename)) #run only if the referenced output file does not exis
         next
       }
       
-      mod_jk = fit_GEE_presence(JK_subdat, corstr_pres=corstr_pres)
+      mod_jk = fit_GEE_presence(JK_subdat, corstr_pres=corstr_pres, maxIter = 100)
       temp_coefs = mod_jk$coefs
       ind = which(all_IDs == id)
       coefs_JK_pres[,ind] = temp_coefs[,2]

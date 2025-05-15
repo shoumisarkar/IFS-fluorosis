@@ -42,7 +42,7 @@ IFS_dat <- read_xlsx(filename)
 ####### Updation of beta_p ############
 #######################################
 
-fit = fit_GEE_presence(dat=IFS_dat, corstr_pres = corstr_pres)
+fit = fit_GEE_presence(dat=IFS_dat, corstr_pres = corstr_pres, maxIter = 100)
 
 coef_pres = fit$coefs
 filename = paste0("Results/03_presence_modelling/", corstr_pres, "/whole_data_based/coefs_pres_age", age, ".RData")
@@ -79,7 +79,7 @@ for(id in all_IDs)
     next
   }
   
-  temp_fit = fit_GEE_presence(dat = JK_subdat, corstr_pres = corstr_pres)
+  temp_fit = fit_GEE_presence(dat = JK_subdat, corstr_pres = corstr_pres, maxIter = 100)
   temp_coefs = temp_fit$coefs
   ind = which(all_IDs == id)
   coefs_JK_pres[,ind] = temp_coefs[,2]
