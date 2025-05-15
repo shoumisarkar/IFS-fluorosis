@@ -780,7 +780,8 @@ js = function(x)
   
   if(!any(is.na(x)))
   {
-    result =   ( 1 - (G-2)/sum(x^2) ) * x 
+    xbar = mean(x)
+    result =  xbar + max(0, (1 - (G-3)/(sum((x - xbar)^2))) ) * (x - xbar) 
   }
   
   return(result)
