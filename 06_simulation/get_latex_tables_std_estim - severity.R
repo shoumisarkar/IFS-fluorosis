@@ -1,5 +1,5 @@
 #####################
-#### PRESENCE #######
+#### SEVERITY #######
 #####################
 
 # Subtable with the std estimates
@@ -8,8 +8,8 @@
 ### Choose correlation structure and age: ###
 #############################################
 
-corstr_pres = "jackknifed"
-corstr_sev = "jackknifed"
+# corstr_pres = "jackknifed"
+# corstr_sev = "jackknifed"
 
 # corstr_pres = "exchangeable"
 # corstr_sev = "exchangeable"
@@ -17,8 +17,8 @@ corstr_sev = "jackknifed"
 # corstr_pres = "independence"
 # corstr_sev = "exchangeable"
 
-# corstr_pres = "exchangeable"
-# corstr_sev = "independence"
+corstr_pres = "exchangeable"
+corstr_sev = "independence"
 
 corstrs = c("independence", "exchangeable", "jackknifed")
 corstr_index_pres = which(corstrs %in% corstr_pres)
@@ -38,20 +38,20 @@ for(age in ages)
   library(xtable)
   
   # Create a .tex file to store the output
-  tex_file <- paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/std_tables_presence_", corstr_pres,
+  tex_file <- paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/std_tables_severity_", corstr_pres,
                      ",", corstr_sev, "_age", age, ".tex")
   sink(tex_file)
   
-  #load the presence RData file
-  filename = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N30/presence/summarytable_std_estimates_presence_",
+  #load the severity RData file
+  filename = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N30/severity/summarytable_std_estimates_severity_",
                     corstr_pres, ",", corstr_sev, ".RData")
   obj = load(filename); assign("table30", get(obj))
   
-  filename = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N50/presence/summarytable_std_estimates_presence_",
+  filename = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N50/severity/summarytable_std_estimates_severity_",
                     corstr_pres, ",", corstr_sev, ".RData")
   obj = load(filename); assign("table50", get(obj))
   
-  filename = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N200/presence/summarytable_std_estimates_presence_",
+  filename = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N200/severity/summarytable_std_estimates_severity_",
                     corstr_pres, ",", corstr_sev, ".RData")
   obj = load(filename); assign("table200", get(obj))
   
@@ -59,11 +59,11 @@ for(age in ages)
   
   caption_text <- paste0("Simulation results for age ", age, " data generated with ", corstr_pres, " and ", 
                          corstr_sev, " correlation structures for presence and severity respectively -",
-                         " properties of standardized estimates arising from the presence model A$_s$.", 
-                         corstr_index_pres, ".", age_ind, ".")
+                         " properties of standardized estimates arising from the severity model B$_s$.", 
+                         corstr_index_sev, ".", age_ind, ".")
   
   cat("\\begin{table}[ht]\n")
-  cat("\\label{ch4:table:sim:std:pres:", corstr_pres, "}\n", sep="")
+  cat("\\label{ch4:table:sim:std:sev:", corstr_sev, "}\n", sep="")
   cat("\\centering\n")
   cat("\\caption{", caption_text, "}\n")
   cat("\\begin{threeparttable}\n")

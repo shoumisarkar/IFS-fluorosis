@@ -85,7 +85,7 @@ for(age in ages)
   cat("\\centering\n")
   cat("\\caption{N=30", "}\n", sep="")
   cat("\\scalebox{0.65}{\n")
-  cat("\\begin{tabular}{lcccccccc}\n")
+  cat("\\begin{tabular}{lcccc|cccc}\n")
   
   #cat("{} & \\multicolumn{4}{c|}{\\textbf{N=30}} & \\multicolumn{4}{c|}{\\textbf{N=50}} & \\multicolumn{4}{c}{\\textbf{N=200}} \\\\ \\hline\n")
   
@@ -112,7 +112,7 @@ for(age in ages)
   cat("\\centering\n")
   cat("\\caption{N=50", "}\n", sep="")
   cat("\\scalebox{0.65}{\n")
-  cat("\\begin{tabular}{lcccccccc}\n")
+  cat("\\begin{tabular}{lcccc|cccc}\n")
   
   #cat("{} & \\multicolumn{4}{c|}{\\textbf{N=30}} & \\multicolumn{4}{c|}{\\textbf{N=50}} & \\multicolumn{4}{c}{\\textbf{N=200}} \\\\ \\hline\n")
   
@@ -138,7 +138,7 @@ for(age in ages)
   cat("\\centering\n")
   cat("\\caption{N=200", "}\n", sep="")
   cat("\\scalebox{0.65}{\n")
-  cat("\\begin{tabular}{lcccccccc}\n")
+  cat("\\begin{tabular}{lcccc|cccc}\n")
   
   #cat("{} & \\multicolumn{4}{c|}{\\textbf{N=30}} & \\multicolumn{4}{c|}{\\textbf{N=50}} & \\multicolumn{4}{c}{\\textbf{N=200}} \\\\ \\hline\n")
   

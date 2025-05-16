@@ -4,8 +4,8 @@
 ### Choose correlation structure and age: ###
 #############################################
 
-corstr_pres = "jackknifed"
-corstr_sev = "jackknifed"
+# corstr_pres = "jackknifed"
+# corstr_sev = "jackknifed"
 
 # corstr_pres = "exchangeable"
 # corstr_sev = "exchangeable"
@@ -13,8 +13,8 @@ corstr_sev = "jackknifed"
 # corstr_pres = "independence"
 # corstr_sev = "exchangeable"
 
-# corstr_pres = "exchangeable"
-# corstr_sev = "independence"
+corstr_pres = "exchangeable"
+corstr_sev = "independence"
 
 corstrs = c("independence", "exchangeable", "jackknifed")
 corstr_index_pres = which(corstrs %in% corstr_pres)
