@@ -17,8 +17,8 @@ source(file = "Codes/functions.R")
 
 model = "combined"
 
-corstr_pres = "jackknifed"
-corstr_sev = "jackknifed"
+# corstr_pres = "jackknifed"
+# corstr_sev = "jackknifed"
 
 #corstr_pres = "exchangeable"
 #corstr_sev = "exchangeable" 
@@ -26,8 +26,8 @@ corstr_sev = "jackknifed"
 # corstr_pres = "independence"
 # corstr_sev = "exchangeable" 
 
-# corstr_pres = "exchangeable"
-# corstr_sev = "independence"
+corstr_pres = "exchangeable"
+corstr_sev = "independence"
 
 mc_seed_range = 1:100
 

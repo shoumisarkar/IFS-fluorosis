@@ -309,6 +309,3 @@ for(model in models)
     
   }
 }
-
-
-

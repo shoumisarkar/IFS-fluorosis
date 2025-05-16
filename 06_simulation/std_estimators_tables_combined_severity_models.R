@@ -19,8 +19,8 @@ source(file = "Codes/functions.R")
 
 model = "combined"
 
-corstr_pres = "jackknifed"
-corstr_sev = "jackknifed"
+#corstr_pres = "jackknifed"
+#corstr_sev = "jackknifed"
 
 #corstr_pres = "exchangeable"
 #corstr_sev = "exchangeable" 
@@ -28,8 +28,8 @@ corstr_sev = "jackknifed"
 # corstr_pres = "independence"
 # corstr_sev = "exchangeable" 
 
-# corstr_pres = "exchangeable"
-# corstr_sev = "independence"
+corstr_pres = "exchangeable"
+corstr_sev = "independence"
 
 mc_seed_range = 1:100
 
@@ -309,7 +309,7 @@ for(N in c(30, 50, 200))
   # save(est_list, file=paste0("combined_severity_aggreg_est_", model,"_", corstr_pres, ",", corstr_sev, ".Rdata"))
   # save(stdest_list, file=paste0("combined_severity_aggreg_stdest_", model,"_", corstr_pres, ",", corstr_sev, ".Rdata"))
   # save(JS_stdest_list, file=paste0("combined_severity_aggreg_JS_stdest_", model,"_", corstr_pres, ",", corstr_sev, ".Rdata"))
-  save(summary_list, file=paste0("summarytable_std_estimates_", model,"_presence_", corstr_pres, ",", corstr_sev, ".Rdata"))
+  save(summary_list, file=paste0("summarytable_std_estimates_", model,"_severity_", corstr_pres, ",", corstr_sev, ".Rdata"))
   
   
   #if(corstr_sev %in% c("ar1", "exchangeable"))
