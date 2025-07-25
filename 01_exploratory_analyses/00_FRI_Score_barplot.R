@@ -1,5 +1,5 @@
 ### Importing the data into dat: ###
-dat = read.csv("W:/somnath.datta/shoumisarkar/Fluorosis/RealData/Dental Exam Data/permanent_fluorosis_hypoplasia_opacity_zone.txt",
+dat = read.csv("path/to/Dental Exam Data/permanent_fluorosis_hypoplasia_opacity_zone.txt",
            sep="", stringsAsFactors=TRUE)
 
 
