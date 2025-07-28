@@ -53,7 +53,7 @@ grid.arrange(plot9, plot13, plot17, plot23, ncol=4)
 
 
 ####################################################################################
-############### Convert to Fluorosis Presence (vs Absence) #########################
+############### Plot relative frequencies of FRI=0 (versus nonzero) cases ##########
 ####################################################################################
 
 #subset by ages:
