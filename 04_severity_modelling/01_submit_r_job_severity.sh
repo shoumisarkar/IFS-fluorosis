@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ages=(17) #(9 13 17 23)
-corstrs=("jackknifed") #("independence" "exchangeable" "ar1" "jackknifed")
+corstrs=("independence" "exchangeable" "ar1" "jackknifed")
 
 for age in "${ages[@]}"
 do
