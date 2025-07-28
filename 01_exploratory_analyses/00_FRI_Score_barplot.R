@@ -1,5 +1,5 @@
 ### Importing the data into dat: ###
-dat = read.csv("path/to/Dental Exam Data/permanent_fluorosis_hypoplasia_opacity_zone.txt",
+dat = read.csv("W:/somnath.datta/shoumisarkar/Fluorosis/RealData/Dental Exam Data/permanent_fluorosis_hypoplasia_opacity_zone.txt",
            sep="", stringsAsFactors=TRUE)
 
 
@@ -17,7 +17,7 @@ plot9 =
   ggplot(age9) + 
   aes(FRI_Score9, fill=Zone) + 
   geom_bar(aes(y = (..count..)/sum(..count..)), position="dodge")  + #side by side
-  labs(title = "FRI on surface zones (age 9)", x = "FRI", y = "Proportions")
+  labs(title = "Age 9", x = "FRI", y = "Proportions")
 
 ### Age 13 ###
 
@@ -25,7 +25,7 @@ plot13 =
   ggplot(age13) + 
   aes(FRI_Score13, fill=Zone) + 
   geom_bar(aes(y = (..count..)/sum(..count..)), position="dodge")  + #side by side
-  labs(title = "FRI on surface zones (age 13)", x = "FRI", y = "Proportions")
+  labs(title = "Age 13", x = "FRI", y = "Proportions")
 
 ### Age 17 ###
 
@@ -33,7 +33,7 @@ plot17 =
   ggplot(age17) + 
   aes(FRI_Score17, fill=Zone) + 
   geom_bar(aes(y = (..count..)/sum(..count..)), position="dodge")  + #side by side
-  labs(title = "FRI on surface zones (age 17)", x = "FRI", y = "Proportions")
+  labs(title = "Age 17", x = "FRI", y = "Proportions")
 
 
 ### Age 23 ###
@@ -42,7 +42,7 @@ plot23 =
   ggplot(age23) + 
   aes(FRI_Score23, fill=Zone) + 
   geom_bar(aes(y = (..count..)/sum(..count..)), position="dodge")  + #side by side
-  labs(title = "FRI on surface zones (age 23)", x = "FRI", y = "Proportions")
+  labs(title = "Age 23", x = "FRI", y = "Proportions")
 
 
 require(gridExtra)
@@ -70,7 +70,7 @@ age23$FRI_Score23 = ifelse(age23$FRI_Score23==0, 0,1)
 plot9 <- ggplot(age9) + 
   aes(FRI_Score9, fill = Zone) + 
   geom_bar(aes(y = (..count..) / sum(..count..)), position = "dodge") +
-  labs(title = "Fluorosis on surface zones (age 9)", x = "FRI", y = "Proportions") +
+  labs(title = "Age 9", x = "FRI", y = "Proportions") +
   scale_x_continuous(breaks = c(0, 1))  # Set the breaks to 0 and 1 on the x-axis
 
 # Print the plot
@@ -82,7 +82,7 @@ plot13 =
   ggplot(age13) + 
   aes(FRI_Score13, fill=Zone) + 
   geom_bar(aes(y = (..count..)/sum(..count..)), position="dodge")  + #side by side
-  labs(title = "Fluorosis on surface zones (age 13)", x = "FRI", y = "Proportions") +
+  labs(title = "Age 13", x = "FRI", y = "Proportions") +
   scale_x_continuous(breaks = c(0, 1))  # Set the breaks to 0 and 1 on the x-axis
 
 ### Age 17 ###
@@ -91,7 +91,7 @@ plot17 =
   ggplot(age17) + 
   aes(FRI_Score17, fill=Zone) + 
   geom_bar(aes(y = (..count..)/sum(..count..)), position="dodge")  + #side by side
-  labs(title = "Fluorosis on surface zones (age 17)", x = "FRI", y = "Proportions") +
+  labs(title = "Age 17", x = "FRI", y = "Proportions") +
   scale_x_continuous(breaks = c(0, 1))  # Set the breaks to 0 and 1 on the x-axis
 
 
@@ -101,7 +101,7 @@ plot23 =
   ggplot(age23) + 
   aes(FRI_Score23, fill=Zone) + 
   geom_bar(aes(y = (..count..)/sum(..count..)), position="dodge")  + #side by side
-  labs(title = "Fluorosis on surface zones (age 23)", x = "FRI", y = "Proportions") +
+  labs(title = "Age 23", x = "FRI", y = "Proportions") +
   scale_x_continuous(breaks = c(0, 1))  # Set the breaks to 0 and 1 on the x-axis
 
 
