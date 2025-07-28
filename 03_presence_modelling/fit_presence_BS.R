@@ -26,10 +26,10 @@ library(readxl)
 # Check if running in a SLURM environment
 if (!is.na(Sys.getenv("SLURM_JOB_ID", unset = NA))) {
   # If in SLURM environment
-  setwd("/path/to/Fluorosis/")
+  setwd("/SLURM/path/to/Fluorosis/")
 } else {
   # If not in SLURM environment
-  setwd("W:/somnath.datta/shoumisarkar/Fluorosis/")
+  setwd("/non-SLURM/path/to/Fluorosis/")
 }
 
 filename = paste0("Results/03_presence_modelling/", corstr_pres, "/bootstrapping/age", age, 
