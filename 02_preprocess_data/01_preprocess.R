@@ -4,9 +4,9 @@ library(readxl)
 library(writexl)
 
 # Load data
-fri_scores <- read.csv("W:/somnath.datta/shoumisarkar/Fluorosis/RealData/Dental Exam Data/permanent_fluorosis_hypoplasia_opacity_zone.txt", sep="")
-six_weeks_to_8_5_years_data <- read_excel("W:/somnath.datta/shoumisarkar/Fluorosis/RealData/Six Monthly Questionnaire Data/SixWeeks_8.5Yrs_DS.xlsx")
-post_8_5_years_data <- read.csv("W:/somnath.datta/shoumisarkar/Fluorosis/RealData/Six Monthly Questionnaire Data/SixMonthQuest_DS.csv")
+fri_scores <- read.csv("path/to/Fluorosis/RealData/Dental Exam Data/permanent_fluorosis_hypoplasia_opacity_zone.txt", sep="")
+six_weeks_to_8_5_years_data <- read_excel("path/to/Fluorosis/RealData/Six Monthly Questionnaire Data/SixWeeks_8.5Yrs_DS.xlsx")
+post_8_5_years_data <- read.csv("path/to/Fluorosis/RealData/Six Monthly Questionnaire Data/SixMonthQuest_DS.csv")
 
 # Preprocess FRI Scores data
 filtered_fri_scores <- fri_scores %>%
@@ -99,7 +99,7 @@ data_age17 = final_cleaned_data[final_cleaned_data$Year==17,]; data_age17$Year =
 data_age23 = final_cleaned_data[final_cleaned_data$Year==23,]; data_age23$Year = NULL
 
 # Save preprocessed data
-setwd("W:/somnath.datta/shoumisarkar/Fluorosis/Results/02_preprocess_data")
+setwd("path/to/Fluorosis/Results/02_preprocess_data")
 write_xlsx(x = data_age9, path = "preprocessed_IFS_data_age9.xlsx")
 write_xlsx(x = data_age13, path = "preprocessed_IFS_data_age13.xlsx")
 write_xlsx(x = data_age17, path = "preprocessed_IFS_data_age17.xlsx")
