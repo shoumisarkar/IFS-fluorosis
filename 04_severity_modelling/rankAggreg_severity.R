@@ -30,7 +30,7 @@ for(age in ages)
     
     corstr_sev_ind = which(corstrs_sev %in% corstr_sev)
     
-    age_spec_mat[, corstr_sev_ind] = as.numeric(temp$`James-Stein SE`)
+    age_spec_mat[, corstr_sev_ind] = as.numeric(temp$`James-Stein MSE`)
   }
   
   #age_spec_mat = t(apply(age_spec_mat, MARGIN = 1, function(x){corstrs_sev[order(x)]}))
@@ -59,9 +59,10 @@ write_table_to_latex <- function(all_outputs) {
   caption_text <- paste0("Rank aggregation over different working correlation structures for the separate severity models at different ages, and overall across all ages.")
   
   cat("\\begin{table}[ht]\n")
-  cat("\\label{ch4:table:sep:sev:", "rankAggreg", "}\n", sep="")
   cat("\\centering\n")
   cat("\\caption{", caption_text, "}\n")
+  cat("\\label{ch4:table:sep:sev:", "rankAggreg", "}\n", sep="")
+
   
   # Add the required LaTeX package
   #cat("\\usepackage{threeparttable}\n\n")
