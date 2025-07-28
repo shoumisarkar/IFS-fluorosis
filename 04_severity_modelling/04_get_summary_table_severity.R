@@ -3,10 +3,10 @@ library(openxlsx)
 # Check if running in a SLURM environment
 if (!is.na(Sys.getenv("SLURM_JOB_ID", unset = NA))) {
   # If in SLURM environment
-  setwd("/blue/somnath.datta/shoumisarkar/Fluorosis/")
+  setwd("/SLURM/path/to/Fluorosis/")
 } else {
   # If not in SLURM environment
-  setwd("W:/somnath.datta/shoumisarkar/Fluorosis/")
+  setwd("non-SLURM/path/to/Fluorosis/")
 }
 
 source(file = "Codes/functions.R")
@@ -41,14 +41,14 @@ write_table_to_excel <- function(CI_list, corstr_sev, conf_level=95) {
     writeData(wb, sheet = name, CI_list[[name]])
   }
   
-  saveWorkbook(wb, paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/04_severity_modelling/",
+  saveWorkbook(wb, paste0("path/to/Fluorosis/Results/04_severity_modelling/",
                           conf_level, "_table_", corstr_sev, ".xlsx"), overwrite = TRUE)
 }
 
 # Function to perform bootstrapping and save CI results
 process_age_data <- function(age, B, corstr_sev, get_CI, vars) {
   stdcoefs_BS_mat <- matrix(NA, nrow = 13, ncol = B)
-  path <- paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/04_severity_modelling/",
+  path <- paste0("path/to/Fluorosis/Results/04_severity_modelling/",
                  corstr_sev, "/bootstrapping/age", age, "/")
   
   for (b in 1:B) {
@@ -69,7 +69,7 @@ ages <- c(9, 13, 17, 23)
 B <- 120
 vars <- c("dental_age", "Total_mgF", "SugarAddedBeverageOzPerDay", "BrushingFrequencyPerDay",
           "Avg_homeppm", "Prop_DentAppt", "Prop_FluorideTreatment", "Tooth8", "Tooth9",
-          "Tooth10", "ZoneM", "ZoneI", "ZoneO")
+          "Tooth10", "ZoneM", "ZoneI", "ZoneE")
 
 stdcoefs_BS_list <- lapply(ages, process_age_data, B = B, corstr_sev = corstr_sev, get_CI = get_CI, vars = vars)
 names(stdcoefs_BS_list) <- paste0("age", ages)
@@ -118,12 +118,12 @@ se_sev_list = list()
 
 for(age in ages)
 {
-  path1 = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/04_severity_modelling/", corstr_sev, "/whole_data_based/coefs_sev_age", age, ".RData")
+  path1 = paste0("path/to/Fluorosis/Results/04_severity_modelling/", corstr_sev, "/whole_data_based/coefs_sev_age", age, ".RData")
   obj_coef_sev <- load(path1)
   assign("coef_sev", get(obj_coef_sev))
   
   
-  path2 = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/04_severity_modelling/", corstr_sev, "/whole_data_based/JK_SD_sev_age", age, ".RData")
+  path2 = paste0("path/to/Fluorosis/Results/04_severity_modelling/", corstr_sev, "/whole_data_based/JK_SD_sev_age", age, ".RData")
   obj_se_sev <- load(path2)
   assign("se_sev", get(obj_se_sev))
   
@@ -239,13 +239,15 @@ summary_95 = create_summary_table()
 
 write_table_to_excel(summary_95, corstr_sev, 95)
 
-#Write latex tables:
-
+####################################
+### Write code for latex tables: ###
+####################################
+                                   
 library(xtable)
 
 write_table_to_latex <- function(my_list, corstr_sev, conf_level=95) {
   # Create a .tex file to store the output
-  tex_file <- paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/04_severity_modelling/", conf_level, "_table_", corstr_sev, ".tex")
+  tex_file <- paste0("path/to/Fluorosis/Results/04_severity_modelling/", conf_level, "_table_", corstr_sev, ".tex")
   sink(tex_file)
   
   corstr_index = which(c("independence", "exchangeable", "ar1", "jackknifed") %in% corstr_sev)
@@ -254,9 +256,7 @@ write_table_to_latex <- function(my_list, corstr_sev, conf_level=95) {
   caption_text <- paste0("Estimates from models B.", corstr_index, ".1-B.", corstr_index, ".4, the separate severity models with the ",
                          corstr_sev, " cluster correlation structure")
   
-  # gsub("age", "", name)
-  
-  #cat("\\section*{", name, "}\n")
+
   cat("\\begin{table}[ht]\n")
   cat("\\centering\n")
   cat("\\caption{", caption_text, "}\n")
@@ -264,8 +264,6 @@ write_table_to_latex <- function(my_list, corstr_sev, conf_level=95) {
   cat("\\begin{threeparttable}\n")
   cat("\\centering\n")
   
-  # Add the required LaTeX package
-  #cat("\\usepackage{threeparttable}\n\n")
   
   # Loop through the list of data frames (tables)
   for (name in names(my_list)) {
@@ -278,7 +276,6 @@ write_table_to_latex <- function(my_list, corstr_sev, conf_level=95) {
     cat("\\caption{Model B.", corstr_index, ".", age_index, " (age ",age,")}\n", sep="")
     cat("\\scalebox{0.55}{\n")
     cat("\\begin{tabular}{rrrrrrrrl}\n")
-    #cat("\\hline\n")
     
     cat("Variable & Estimate & \\makecell{Standardized\\\\Estimate} & \\makecell{SE\\\\(Standardized\\\\Estimate)} & \\makecell{James-Stein\\\\Estimator} & \\makecell{Bias\\\\(James-Stein\\\\Estimator)} & \\makecell{SE\\\\(James-Stein\\\\Estimator)} & \\makecell{MSE\\\\(James-Stein\\\\Estimator)} & \\makecell{95\\% CI\\\\(James-Stein\\\\Estimator)} \\\\\n")
     
