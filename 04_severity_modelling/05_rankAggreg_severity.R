@@ -8,7 +8,7 @@ corstrs_sev = c("independence", "exchangeable", "ar1", "jackknifed")
 model_names = paste("B", 1:4, sep=".")
 
 #Get variable names
-temp = read_xlsx(paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/04_severity_modelling/95_table_",
+temp = read_xlsx(paste0("path/to/Fluorosis/Results/04_severity_modelling/95_table_",
                         "ar1", ".xlsx"), sheet = 1)
 vars = temp$Variable
 
@@ -25,7 +25,7 @@ for(age in ages)
   
   for(corstr_sev in corstrs_sev)
   {
-    temp = read_xlsx(paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/04_severity_modelling/95_table_",
+    temp = read_xlsx(paste0("path/to/Fluorosis/Results/04_severity_modelling/95_table_",
                             corstr_sev, ".xlsx"), sheet = age_ind)
     
     corstr_sev_ind = which(corstrs_sev %in% corstr_sev)
@@ -33,7 +33,6 @@ for(age in ages)
     age_spec_mat[, corstr_sev_ind] = as.numeric(temp$`James-Stein MSE`)
   }
   
-  #age_spec_mat = t(apply(age_spec_mat, MARGIN = 1, function(x){corstrs_sev[order(x)]}))
   age_spec_mat = t(apply(age_spec_mat, MARGIN = 1, function(x){model_names[order(x)]}))
   
   result <- RankAggreg(age_spec_mat, 4, method="CE", distance="Spearman", N=100, convIn=5, rho=.1)
@@ -45,12 +44,15 @@ overall_result <- RankAggreg(age_wise_mat, 4, method="CE", distance="Spearman", 
 all_outputs = rbind(age_wise_mat, Overall = overall_result$top.list); colnames(all_outputs) = paste0("Rank ", 1:4)
 all_outputs
 
+####################################
+### Write code for latex tables: ###
+####################################
 
 library(xtable)
 
 write_table_to_latex <- function(all_outputs) {
   # Create a .tex file to store the output
-  tex_file <- paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/04_severity_modelling/RankAggreg_sev.tex")
+  tex_file <- paste0("path/to/Fluorosis/Results/04_severity_modelling/RankAggreg_sev.tex")
   sink(tex_file)
   
   corstr_index = which(corstrs_sev %in% corstr_sev)
@@ -63,13 +65,6 @@ write_table_to_latex <- function(all_outputs) {
   cat("\\caption{", caption_text, "}\n")
   cat("\\label{ch4:table:sep:sev:", "rankAggreg", "}\n", sep="")
 
-  
-  # Add the required LaTeX package
-  #cat("\\usepackage{threeparttable}\n\n")
-  
-  
-  #cat("\\scalebox{0.65}{\n")
-  #cat("\\begin{tabular}{rlcccccl}\n")
   cat("\\begin{tabular}{rccccccl}\n")
   #cat("\\hline\n")
   
@@ -78,14 +73,11 @@ write_table_to_latex <- function(all_outputs) {
   
   # Print the table body without column names
   print(xtable(all_outputs[1:5,], align = c("r", "c", "c", "c", "c")), 
-        #print(xtable(my_list[[name]], align = c("r", "l", "c", "c", "c", "c", "c", "l")), 
-        #print(xtable(my_list[[name]], align = c("r", "l", "c", "c", "c")), 
         include.rownames = T, include.colnames = FALSE, type = "latex", only.contents = TRUE)
   
   cat("\\end{tabular}\n")
-  #cat("}\n")
-  
-  
+
+
   # Add custom notes at the end of the table
   cat("\\begin{tablenotes}\n")
   cat("\\scriptsize\n")
