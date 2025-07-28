@@ -86,7 +86,7 @@ final_cleaned_data <- final_cleaned_data %>%
          Tooth10 = as.integer(Tooth == 10),
          ZoneM = as.integer(Zone == 'M'),
          ZoneI = as.integer(Zone == 'I'),
-         ZoneO = as.integer(Zone == 'O'))
+         ZoneE = as.integer(Zone == 'O')) #for the maxillary incisors (teeth 7-10) considered, the surface is called the incisal edge; hence the letter E in the Zone indicator.
 
 # Remove the original Tooth and Zone columns
 final_cleaned_data$Tooth <- NULL
