@@ -57,7 +57,7 @@ filename = paste0("Results/03_presence_modelling/", corstr_pres, "/whole_data_ba
 save(rho_pres, file = filename) 
 
 #######################################
-###### Get jackknifed estimates #######
+############ Jackknifing ##############
 #######################################
 
 all_IDs = unique(IFS_dat$SUBJECT_ID)
@@ -110,7 +110,7 @@ if(corstr_pres!="jackknifed")
 }
 
 ##################################################
-###### Get SD of the jackknifed estimators #######
+############# Get the jackknifed SD ##############
 ##################################################
 
 JK_SD_pres = data.frame(apply(coefs_JK_pres, MARGIN=1, FUN= compute_JK_SE))
