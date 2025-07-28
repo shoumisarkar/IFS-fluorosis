@@ -31,7 +31,7 @@ for(age in ages)
     
     corstr_ind = which(corstrs %in% corstr)
     
-    age_spec_mat[, corstr_ind] = as.numeric(temp$`James-Stein SE`)
+    age_spec_mat[, corstr_ind] = as.numeric(temp$`James-Stein MSE`)
   }
   
   #age_spec_mat = t(apply(age_spec_mat, MARGIN = 1, function(x){corstrs[order(x)]}))
@@ -60,9 +60,10 @@ write_table_to_latex <- function(all_outputs) {
   caption_text <- paste0("Rank aggregation over different working correlation structures for the presence models from the combined modeling at different ages, and overall across all ages.")
   
   cat("\\begin{table}[ht]\n")
-  cat("\\label{ch4:table:comb:pres:", "rankAggreg", "}\n", sep="")
   cat("\\centering\n")
   cat("\\caption{", caption_text, "}\n")
+  cat("\\label{ch4:table:comb:pres:", "rankAggreg", "}\n", sep="")
+  
   
   # Add the required LaTeX package
   #cat("\\usepackage{threeparttable}\n\n")

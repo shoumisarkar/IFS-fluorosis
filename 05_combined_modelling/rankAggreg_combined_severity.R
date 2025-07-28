@@ -31,7 +31,7 @@ for(age in ages)
     
     corstr_ind = which(corstrs %in% corstr)
     
-    age_spec_mat[, corstr_ind] = as.numeric(temp$`James-Stein SE`)
+    age_spec_mat[, corstr_ind] = as.numeric(temp$`James-Stein MSE`)
   }
   
   #age_spec_mat = t(apply(age_spec_mat, MARGIN = 1, function(x){corstrs[order(x)]}))
@@ -53,15 +53,15 @@ write_table_to_latex <- function(all_outputs) {
   tex_file <- paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/05b_combined_severity_modelling/RankAggreg_combined_sev.tex")
   sink(tex_file)
   
-  corstr_index = which(corstrs_sev %in% corstr_sev)
+  corstr_index = which(corstrs %in% corstr)
   
   #Model name: A.1.1 means A independence age
   caption_text <- paste0("Rank aggregation over different working correlation structures for the severity models from the combined modeling at different ages, and overall across all ages.")
   
   cat("\\begin{table}[ht]\n")
-  cat("\\label{ch4:table:comb:sev:", "rankAggreg", "}\n", sep="")
   cat("\\centering\n")
   cat("\\caption{", caption_text, "}\n")
+  cat("\\label{ch4:table:comb:sev:", "rankAggreg", "}\n", sep="")
   
   # Add the required LaTeX package
   #cat("\\usepackage{threeparttable}\n\n")
