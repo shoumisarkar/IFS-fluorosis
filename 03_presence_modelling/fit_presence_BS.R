@@ -36,7 +36,7 @@ filename = paste0("Results/03_presence_modelling/", corstr_pres, "/bootstrapping
                   "/std_coefs_pres_age", age, "_b", b,".RData")
 
 
-if(!file.exists(filename)) #run only if the referenced output file does not exist yet 
+if(!file.exists(filename)) #if the output exists already, no need to re-run 
 {
   source("Codes/functions.R")
   
@@ -92,7 +92,7 @@ if(!file.exists(filename)) #run only if the referenced output file does not exis
     save(rho_pres, file = filename)
     
     #######################################
-    ###### Get jackknifed estimates #######
+    ############ Jackknifing ##############
     #######################################
     
     all_IDs = unique(IFS_dat_BS$SUBJECT_ID)
@@ -147,7 +147,7 @@ if(!file.exists(filename)) #run only if the referenced output file does not exis
     }
     
     ##################################################
-    ###### Get SD of the jackknifed estimators #######
+    ############## Get jackknifed SD #################
     ##################################################
     
     JK_SD_pres = data.frame(apply(coefs_JK_pres, MARGIN=1, FUN= compute_JK_SE))
