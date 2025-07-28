@@ -43,8 +43,10 @@ overall_result <- RankAggreg(age_wise_mat, 4, method="CE", distance="Spearman", 
 all_outputs = rbind(age_wise_mat, Overall = overall_result$top.list); colnames(all_outputs) = paste0("Rank ", 1:4)
 all_outputs
 
-
-
+####################################
+### Write code for latex tables: ###
+####################################
+                                   
 library(xtable)
 
 write_table_to_latex <- function(all_outputs) {
