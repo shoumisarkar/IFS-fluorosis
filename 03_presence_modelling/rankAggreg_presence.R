@@ -7,7 +7,7 @@ corstrs_pres = c("independence", "exchangeable", "ar1", "jackknifed")
 model_names = paste("A", 1:4, sep=".")
 
 #Get variable names
-temp = read_xlsx(paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/03_presence_modelling/95_table_",
+temp = read_xlsx(paste0("path/to/Fluorosis/Results/03_presence_modelling/95_table_",
                         "ar1", ".xlsx"), sheet = 1)
 vars = temp$Variable
 
@@ -24,7 +24,7 @@ for(age in ages)
   
   for(corstr_pres in corstrs_pres)
   {
-    temp = read_xlsx(paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/03_presence_modelling/95_table_",
+    temp = read_xlsx(paste0("path/to/Fluorosis/Results/03_presence_modelling/95_table_",
                             corstr_pres, ".xlsx"), sheet = age_ind)
     
     corstr_pres_ind = which(corstrs_pres %in% corstr_pres)
@@ -32,7 +32,6 @@ for(age in ages)
     age_spec_mat[, corstr_pres_ind] = as.numeric(temp$`James-Stein MSE`)
   }
   
-  #age_spec_mat = t(apply(age_spec_mat, MARGIN = 1, function(x){corstrs_pres[order(x)]}))
   age_spec_mat = t(apply(age_spec_mat, MARGIN = 1, function(x){model_names[order(x)]}))
   
   result <- RankAggreg(age_spec_mat, 4, method="CE", distance="Spearman", N=100, convIn=5, rho=.1)
@@ -50,12 +49,12 @@ library(xtable)
 
 write_table_to_latex <- function(all_outputs) {
   # Create a .tex file to store the output
-  tex_file <- paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/03_presence_modelling/RankAggreg_pres.tex")
+  tex_file <- paste0("path/to/Fluorosis/Results/03_presence_modelling/RankAggreg_pres.tex")
   sink(tex_file)
   
   corstr_index = which(corstrs_pres %in% corstr_pres)
   
-  #Model name: A.1.1 means A independence age
+  #Model name: e.g. A.1.1 means separate presence model, independence working correlation, age 9
   caption_text <- paste0("Rank aggregation over different working correlation structures for the separate presence models at different ages, and overall across all ages.")
   
   cat("\\begin{table}[ht]\n")
@@ -64,15 +63,8 @@ write_table_to_latex <- function(all_outputs) {
   cat("\\label{ch4:table:sep:pres:", "rankAggreg", "}\n", sep="")
   
   # Add the required LaTeX package
-  #cat("\\usepackage{threeparttable}\n\n")
-  
-    
-    #cat("\\scalebox{0.65}{\n")
-    #cat("\\begin{tabular}{rlcccccl}\n")
     cat("\\begin{tabular}{rccccccl}\n")
-    #cat("\\hline\n")
-    
-    #cat("Variable & Estimate & SE & {95\\% CI} \\\\\n")
+  
     cat("Age & Rank 1 & Rank 2 & Rank 3 & Rank 4 \\\\\n")
     
     # Print the table body without column names
@@ -82,7 +74,6 @@ write_table_to_latex <- function(all_outputs) {
           include.rownames = T, include.colnames = FALSE, type = "latex", only.contents = TRUE)
     
     cat("\\end{tabular}\n")
-    #cat("}\n")
     
 
   # Add custom notes at the end of the table
