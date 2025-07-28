@@ -27,7 +27,7 @@ library(readxl)
 # Check if running in a SLURM environment
 if (!is.na(Sys.getenv("SLURM_JOB_ID", unset = NA))) {
   # If in SLURM environment
-  setwd("/blue/somnath.datta/shoumisarkar/Fluorosis/")
+  setwd("/path/to/Fluorosis/")
 } else {
   # If not in SLURM environment
   setwd("W:/somnath.datta/shoumisarkar/Fluorosis/")
