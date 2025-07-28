@@ -3,10 +3,10 @@ library(openxlsx)
 # Check if running in a SLURM environment
 if (!is.na(Sys.getenv("SLURM_JOB_ID", unset = NA))) {
   # If in SLURM environment
-  setwd("/blue/somnath.datta/shoumisarkar/Fluorosis/")
+  setwd("/SLURM/path/to/Fluorosis/")
 } else {
   # If not in SLURM environment
-  setwd("W:/somnath.datta/shoumisarkar/Fluorosis/")
+  setwd("/non-SLURM/path/to/Fluorosis/")
 }
 
 source(file = "Codes/functions.R")
@@ -41,14 +41,14 @@ write_table_to_excel <- function(CI_list, corstr_pres, conf_level=95) {
     writeData(wb, sheet = name, CI_list[[name]])
   }
   
-  saveWorkbook(wb, paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/03_presence_modelling/",
+  saveWorkbook(wb, paste0("path/to/Fluorosis/Results/03_presence_modelling/",
                           conf_level, "_table_", corstr_pres, ".xlsx"), overwrite = TRUE)
 }
 
 # Function to perform bootstrapping and save CI results
 process_age_data <- function(age, B, corstr_pres, get_CI, vars) {
   stdcoefs_BS_mat <- matrix(NA, nrow = 13, ncol = B)
-  path <- paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/03_presence_modelling/",
+  path <- paste0("path/to/Fluorosis/Results/03_presence_modelling/",
                  corstr_pres, "/bootstrapping/age", age, "/")
   
   for (b in 1:B) {
@@ -118,12 +118,12 @@ se_pres_list = list()
 
 for(age in ages)
 {
-  path1 = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/03_presence_modelling/", corstr_pres, "/whole_data_based/coefs_pres_age", age, ".RData")
+  path1 = paste0("path/to/Fluorosis/Results/03_presence_modelling/", corstr_pres, "/whole_data_based/coefs_pres_age", age, ".RData")
   obj_coef_pres <- load(path1)
   assign("coef_pres", get(obj_coef_pres))
   
   
-  path2 = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/03_presence_modelling/", corstr_pres, "/whole_data_based/JK_SD_pres_age", age, ".RData")
+  path2 = paste0("path/to/Fluorosis/Results/03_presence_modelling/", corstr_pres, "/whole_data_based/JK_SD_pres_age", age, ".RData")
   obj_se_pres <- load(path2)
   assign("se_pres", get(obj_se_pres))
   
@@ -244,13 +244,15 @@ summary_95 = create_summary_table()
 
 write_table_to_excel(summary_95, corstr_pres)
 
-#Write latex tables:
-
+####################################
+### Write code for latex tables: ###
+####################################
+                                   
 library(xtable)
 
 write_table_to_latex <- function(my_list, corstr_pres, conf_level=95) {
   # Create a .tex file to store the output
-  tex_file <- paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/03_presence_modelling/", conf_level, "_table_", corstr_pres, ".tex")
+  tex_file <- paste0("path/to/Fluorosis/Results/03_presence_modelling/", conf_level, "_table_", corstr_pres, ".tex")
   sink(tex_file)
   
   corstr_index = which(c("independence", "exchangeable", "ar1", "jackknifed") %in% corstr_pres)
