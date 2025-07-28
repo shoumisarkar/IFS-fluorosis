@@ -24,10 +24,10 @@ library(readxl)
 # Check if running in a SLURM environment
 if (!is.na(Sys.getenv("SLURM_JOB_ID", unset = NA))) {
   # If in SLURM environment
-  setwd("/blue/somnath.datta/shoumisarkar/Fluorosis/")
+  setwd("/SLURM/path/to/Fluorosis/")
 } else {
   # If not in SLURM environment
-  setwd("W:/somnath.datta/shoumisarkar/Fluorosis/")
+  setwd("non-SLURM/path/to/Fluorosis/")
 }
 
 source(file = "Codes/functions.R")
@@ -106,9 +106,9 @@ if(corstr_sev!="jackknifed")
   
 }
 
-##################################################
-###### Get SD of the jackknifed estimators #######
-##################################################
+####################################
+###### Get the jackknifed SD #######
+####################################
 
 JK_SD_sev = data.frame(apply(coefs_JK_sev, MARGIN=1, FUN= compute_JK_SE))
 colnames(JK_SD_sev) = "SD"
