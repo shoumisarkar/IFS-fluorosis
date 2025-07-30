@@ -2,7 +2,7 @@
 empirical_power = function(target_alpha = 0.05, M=1000, beta=-2)
 {
   
-  setwd(paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/PowerStudy/N30 - beta=",
+  setwd(paste0("path/to/Fluorosis/Results/06_simulation/PowerStudy/N30 - beta=",
                beta, "/presence/independence,independence/age23"))
   
   std_estimates = c()
@@ -20,8 +20,6 @@ empirical_power = function(target_alpha = 0.05, M=1000, beta=-2)
     {
       next
     }
-    
-    # count = count + 1
     
     obj = load(filename)
     assign("bs_Avghomeppm", get(obj))
@@ -42,11 +40,6 @@ empirical_power = function(target_alpha = 0.05, M=1000, beta=-2)
     
     signif_vec = c(signif_vec, is_signif)
     std_estimates = c(std_estimates, std_estimate)
-    
-    # if(count == 100)
-    # {
-    #   break
-    # }
   }
   
   power = length(which(signif_vec))/length((signif_vec))
@@ -54,8 +47,6 @@ empirical_power = function(target_alpha = 0.05, M=1000, beta=-2)
   
   return(list(power=power, effect_size=effect_size))
 }
-
-#empirical_power(target_alpha = 0.05)
 
 #Get power curve:
 
