@@ -18,7 +18,8 @@ install_if_missing <- function(packages) {
 # Load all packages at once
 lapply(required_packages, library, character.only = TRUE)
 
-
+#####################################
+#####################################
 
 get_corr_submat <- function(master_mat, selected_combinations){ 
   m.x <- melt(master_mat)
@@ -53,22 +54,34 @@ get_multinom_corrmat <- function(pi1, pi2, pi3) {
   return(M)
 }
 
+#####################################
+#####################################
+
 get_tooth_index = function(dat = IFS_dat)
 {
   Tooth = ifelse(dat$Tooth8==1, 8, ifelse(dat$Tooth9==1, 9, ifelse(dat$Tooth10==1, 10, 7)))
   return(Tooth)
 }
 
+#####################################
+#####################################
+
 get_zone_index = function(dat = IFS_dat)
 {
-  Zone = ifelse(dat$ZoneM==1, "M", ifelse(dat$ZoneI==1, "I", ifelse(dat$ZoneO==1, "O", "C")))
+  Zone = ifelse(dat$ZoneM==1, "M", ifelse(dat$ZoneI==1, "I", ifelse(dat$ZoneE==1, "O", "C")))
   return(Zone)
 }
+
+#####################################
+#####################################
 
 #for scalar input
 inv_logit <- function(x) {
   ifelse(is.infinite(exp(x)), 1, exp(x) / (1 + exp(x)))
 }
+
+#####################################
+#####################################
 
 inv_logit_vec <- function(x) {
   exp_x <- exp(x)  # Precompute exp(x)
@@ -82,10 +95,16 @@ inv_logit_vec <- function(x) {
   return(result)
 }
 
+#####################################
+#####################################
+
 # Function to repeat columns consecutively
 repeat_column <- function(column, times=3) {
   matrix(rep(column, times), ncol = times, byrow = FALSE)
 }
+
+#####################################
+#####################################
 
 #function to create an exchangeable matrix
 create_exchangeable_matrix <- function(n, rho) {
@@ -96,15 +115,23 @@ create_exchangeable_matrix <- function(n, rho) {
   return(mat)
 }
 
+#####################################
+#####################################
+
 transform_to_vec1 = function(x)
 {
   return(c(x, -x, 0))
 }
+#####################################
+#####################################
 
 transform_to_vec2 = function(x)
 {
   return(c(0, x, -x))
 }
+
+#####################################
+#####################################
 
 #Function to calculate presence model's exchangeable correlation parameter:
 get_rho_pres_exch = function(dat_pres = dat_pres,
@@ -137,13 +164,13 @@ get_rho_pres_exch = function(dat_pres = dat_pres,
   compare_inds_i = outer(1:nrow(dat_pres), 1:nrow(dat_pres), FUN = function(x, y){x==y})
   compare_inds_ZoneM = outer(dat_pres$ZoneM, dat_pres$ZoneM, FUN = function(x, y){x==y})
   compare_inds_ZoneI = outer(dat_pres$ZoneI, dat_pres$ZoneI, FUN = function(x, y){x==y})
-  compare_inds_ZoneO = outer(dat_pres$ZoneO, dat_pres$ZoneO, FUN = function(x, y){x==y})
+  compare_inds_ZoneE = outer(dat_pres$ZoneE, dat_pres$ZoneE, FUN = function(x, y){x==y})
   compare_inds_Tooth8 = outer(dat_pres$Tooth8, dat_pres$Tooth8, FUN = function(x, y){x==y})
   compare_inds_Tooth9 = outer(dat_pres$Tooth9, dat_pres$Tooth9, FUN = function(x, y){x==y})
   compare_inds_Tooth10 = outer(dat_pres$Tooth10, dat_pres$Tooth10, FUN = function(x, y){x==y})
   
   keep_ind = !(compare_inds_i | 
-                 ((compare_inds_ZoneM & compare_inds_ZoneI & compare_inds_ZoneO) &
+                 ((compare_inds_ZoneM & compare_inds_ZoneI & compare_inds_ZoneE) &
                     (compare_inds_Tooth8 & compare_inds_Tooth9 & compare_inds_Tooth10)) 
   )
   
@@ -158,6 +185,8 @@ get_rho_pres_exch = function(dat_pres = dat_pres,
   return(rho_pres)
 }
 
+#####################################
+#####################################
 
 #Function to calculate severity model's exchangeable correlation parameter:
 get_rho_sev_exch = function(dat_sev=dat_sev, 
@@ -209,10 +238,10 @@ get_rho_sev_exch = function(dat_sev=dat_sev,
   dat2$std_Zminuspi2 = dat2$Zminuspi2/sqrt(dat2$varZ2)
   dat2$std_Zminuspi3 = dat2$Zminuspi3/sqrt(dat2$varZ3)
   
-  resids1 = dat2[c("SUBJECT_ID", "Ws", "Tooth8", "Tooth9", "Tooth10", "ZoneM", "ZoneI", "ZoneO", "std_Zminuspi1")]
+  resids1 = dat2[c("SUBJECT_ID", "Ws", "Tooth8", "Tooth9", "Tooth10", "ZoneM", "ZoneI", "ZoneE", "std_Zminuspi1")]
   colnames(resids1)[ncol(resids1)] = "std_Zminuspi"
-  resids2 = dat2[c("SUBJECT_ID", "Ws", "Tooth8", "Tooth9", "Tooth10", "ZoneM", "ZoneI", "ZoneO", "std_Zminuspi2")]; colnames(resids2)[ncol(resids2)] = "std_Zminuspi"
-  resids3 = dat2[c("SUBJECT_ID", "Ws" ,"Tooth8", "Tooth9", "Tooth10", "ZoneM", "ZoneI", "ZoneO", "std_Zminuspi3")]; colnames(resids3)[ncol(resids3)] = "std_Zminuspi"
+  resids2 = dat2[c("SUBJECT_ID", "Ws", "Tooth8", "Tooth9", "Tooth10", "ZoneM", "ZoneI", "ZoneE", "std_Zminuspi2")]; colnames(resids2)[ncol(resids2)] = "std_Zminuspi"
+  resids3 = dat2[c("SUBJECT_ID", "Ws" ,"Tooth8", "Tooth9", "Tooth10", "ZoneM", "ZoneI", "ZoneE", "std_Zminuspi3")]; colnames(resids3)[ncol(resids3)] = "std_Zminuspi"
   
   stacked_resids = rbind(resids1, resids2, resids3)
   
@@ -237,6 +266,9 @@ get_rho_sev_exch = function(dat_sev=dat_sev,
   
   return(rho_sev)
 }
+
+#####################################
+#####################################
 
 #Function to calculate presence model's ar1 correlation parameter:
 get_rho_pres_ar1 = function(dat_pres=dat_pres, 
@@ -283,6 +315,9 @@ get_rho_pres_ar1 = function(dat_pres=dat_pres,
   return(rho_pres)
 }
 
+#####################################
+#####################################
+                           
 #Function to calculate severity model's exchangeable correlation parameter:
 get_rho_sev_ar1 = function(dat_sev=dat_sev, 
                            init_sev_coef=init_sev_coef)
@@ -327,10 +362,10 @@ get_rho_sev_ar1 = function(dat_sev=dat_sev,
   dat2$std_Zminuspi2 = dat2$Zminuspi2/sqrt(dat2$varZ2)
   dat2$std_Zminuspi3 = dat2$Zminuspi3/sqrt(dat2$varZ3)
   
-  resids1 = dat2[c("SUBJECT_ID", "Ws", "Tooth8", "Tooth9", "Tooth10", "ZoneM", "ZoneI", "ZoneO", "std_Zminuspi1")]
+  resids1 = dat2[c("SUBJECT_ID", "Ws", "Tooth8", "Tooth9", "Tooth10", "ZoneM", "ZoneI", "ZoneE", "std_Zminuspi1")]
   colnames(resids1)[ncol(resids1)] = "std_Zminuspi"
-  resids2 = dat2[c("SUBJECT_ID", "Ws", "Tooth8", "Tooth9", "Tooth10", "ZoneM", "ZoneI", "ZoneO", "std_Zminuspi2")]; colnames(resids2)[ncol(resids2)] = "std_Zminuspi"
-  resids3 = dat2[c("SUBJECT_ID", "Ws" ,"Tooth8", "Tooth9", "Tooth10", "ZoneM", "ZoneI", "ZoneO", "std_Zminuspi3")]; colnames(resids3)[ncol(resids3)] = "std_Zminuspi"
+  resids2 = dat2[c("SUBJECT_ID", "Ws", "Tooth8", "Tooth9", "Tooth10", "ZoneM", "ZoneI", "ZoneE", "std_Zminuspi2")]; colnames(resids2)[ncol(resids2)] = "std_Zminuspi"
+  resids3 = dat2[c("SUBJECT_ID", "Ws" ,"Tooth8", "Tooth9", "Tooth10", "ZoneM", "ZoneI", "ZoneE", "std_Zminuspi3")]; colnames(resids3)[ncol(resids3)] = "std_Zminuspi"
   
   stacked_resids = rbind(resids1, resids2, resids3)
   
@@ -360,6 +395,9 @@ get_rho_sev_ar1 = function(dat_sev=dat_sev,
   return(rho_sev)
 }
 
+#####################################
+#####################################                           
+                           
 #Function to get presence model's jackknifed correlation matrix
 # get_JK_corrmat_pres <- function(dat_pres, init_pres_coef) {
 #   epsilon <- 1e-6
@@ -444,6 +482,8 @@ get_rho_sev_ar1 = function(dat_sev=dat_sev,
 #   return(JK_corr_mat_pres)
 # }
 
+#####################################
+#####################################
 
 get_JK_corrmat_pres <- function(dat_pres, init_pres_coef, parallel = TRUE) {
   epsilon <- 1e-6
@@ -534,7 +574,8 @@ get_JK_corrmat_pres <- function(dat_pres, init_pres_coef, parallel = TRUE) {
   return(JK_corr_mat_pres)
 }
 
-
+#####################################
+#####################################
 
 # get_JK_corrmat_sev <- function(dat_sev = dat_sev, 
 #                                init_sev_coef = init_sev_coef) {
@@ -653,6 +694,9 @@ get_JK_corrmat_pres <- function(dat_pres, init_pres_coef, parallel = TRUE) {
 #   return(JK_corr_mat_sev)
 # }
 
+#####################################
+#####################################
+                           
 get_JK_corrmat_sev <- function(dat_sev, init_sev_coef, parallel = TRUE) {
   epsilon <- 1e-6
   N <- length(unique(dat_sev$SUBJECT_ID))
@@ -754,8 +798,8 @@ get_JK_corrmat_sev <- function(dat_sev, init_sev_coef, parallel = TRUE) {
   return(JK_corr_mat_sev)
 }
 
-
-
+#####################################
+#####################################
 
 #Drop columns in a dataframe which have nonzero number of NAs
 extract_non_NA_cols = function(df)
@@ -771,7 +815,9 @@ compute_JK_SE = function(x){
   return(SE)
 }
 
-
+#####################################
+#####################################
+                           
 #Define function for James-Stein shrinkage:
 js = function(x)
 {
@@ -786,6 +832,8 @@ js = function(x)
   return(result)
 }
 
+#####################################
+#####################################                           
 
 fit_GEE_presence <- function(dat = IFS_dat, kappa = 0.25, corstr_pres = "independence", 
                              maxIter = 10, tol = 1e-7, n_cores = min(16, detectCores() - 1),
@@ -951,6 +999,8 @@ fit_GEE_presence <- function(dat = IFS_dat, kappa = 0.25, corstr_pres = "indepen
   return(results)
 }
 
+#####################################
+#####################################                                       
 
 #########################################
 ## Improved functions for simulations: ##
@@ -1110,6 +1160,8 @@ fit_GEE_combined <-
       rho_pres <- pmax(pmin(rho_pres, 1), -1)
     }
     
+#####################################
+#####################################
     
     ##################
     #### Severity ####
@@ -1431,7 +1483,8 @@ fit_GEE_combined <-
     
   }
 
-
+#####################################
+#####################################
 
 fit_GEE_severity <- function(dat = IFS_dat, kappa = 0.25, corstr_sev = "independence", 
                              maxIter = 10, tol = 1e-7, n_cores = min(16, detectCores() - 1),
@@ -1780,7 +1833,9 @@ fit_GEE_severity <- function(dat = IFS_dat, kappa = 0.25, corstr_sev = "independ
   return(results)
 }
 
-
+#####################################
+#####################################
+                                      
 ################################
 #### Get simulated dataset: ####
 ################################
@@ -1981,6 +2036,9 @@ update_MC_dataset = function(dataset=MC_dataset, seed=mc_seed)
   return(dataset)
 }
 
+#####################################
+#####################################
+                                      
 update_MC_dataset2 = function(dataset=MC_dataset, seed=mc_seed)
 {
   #Update the Y in dataset:
