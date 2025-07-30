@@ -274,4 +274,5 @@ for(model in models)
     write.xlsx(summary_list, file = paste0("summarytable_raw_est_", model,"_", corstr_pres, ",", corstr_sev, "_N_", N, ".xlsx"),
                sheetNames = names(summary_list))
 
-  
+    }
+}
