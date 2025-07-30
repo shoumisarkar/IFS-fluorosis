@@ -3,7 +3,7 @@
 sleepsecs=$[ ( $RANDOM % 100 ) + 100 ]s
 sleep $sleepsecs
 
-cd /blue/somnath.datta/shoumisarkar/Fluorosis/Codes/06_simulation/N=50
+cd /path/to/Fluorosis/Codes/06_simulation/N=50
 
 pwd; hostname; date
 
