@@ -9,7 +9,7 @@ if (!is.na(Sys.getenv("SLURM_JOB_ID", unset = NA))) {
   path_prefix = "/blue/"
 }
 
-setwd(paste0(path_prefix, "somnath.datta/shoumisarkar/Fluorosis/"))
+setwd(paste0(path_prefix, "path/to/Fluorosis/"))
 source(file = "Codes/functions.R")
 
 
@@ -44,7 +44,7 @@ for(N in c(30, 50, 200))
   
   for(mc_seed in mc_seed_range)
   {
-    setwd(paste0(path_prefix, "somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N", N, "/", 
+    setwd(paste0(path_prefix, "path/to/Fluorosis/Results/06_simulation/N", N, "/", 
                  model, "/", corstr_pres, ",", corstr_sev, "/age9"))
     
     fn_est = paste0("coef_pres_MC_", mc_seed, ".Rdata")
@@ -64,9 +64,6 @@ for(N in c(30, 50, 200))
     }
   }
   
-  #we want to keep all param names, so comment this out
-  #param_names = param_names[-c(1:4)]
-  
   ###################################################
   ### Extract estimates into a list of dataframes ###
   ###################################################
@@ -78,7 +75,7 @@ for(N in c(30, 50, 200))
   {
     age_ind = which(ages %in% age)
     
-    setwd(paste0(path_prefix, "somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N", N, "/", 
+    setwd(paste0(path_prefix, "path/to/Fluorosis/Results/06_simulation/N", N, "/", 
                  model, "/", corstr_pres, ",", corstr_sev, "/age", age))
     
     
@@ -123,14 +120,7 @@ for(N in c(30, 50, 200))
           stdest_df[, mc_seed] <- NA  # Assign NA to this column if there's an error
         })
         
-        
-        #if(corstr_sev %in% c("exchangeable", "ar1"))
-        #{
-        #obj = load(fn_rho)
-        #assign("rho", get(obj))
-        #sev_rho_vec = c(sev_rho_vec, rho)
-        #}
-        
+  
         
       }
     }
@@ -155,9 +145,6 @@ for(N in c(30, 50, 200))
   JS_stdest_list$age13 = JS_stdest_list$age13[-c(1,2,3),]
   JS_stdest_list$age17 = JS_stdest_list$age17[-c(1,2,3),]
   JS_stdest_list$age23 = JS_stdest_list$age23[-c(1,2,3),]
-  
-  #done till here.
-  #Presence component: have all params in est, remove only gamma for std_est, and finally keep only betas for JS_std_est
   
   #loop over vars, the loop over mc_seed
   
@@ -189,13 +176,7 @@ for(N in c(30, 50, 200))
     }
     
   }
-  
-  # JS_stdest_list$age9[1:n_intercept,] = NA
-  # JS_stdest_list$age13[1:n_intercept,] = NA
-  # JS_stdest_list$age17[1:n_intercept,] = NA
-  # JS_stdest_list$age23[1:n_intercept,] = NA
-  
-  
+
   #############################
   ### Compute summary table ###
   #############################
@@ -204,25 +185,7 @@ for(N in c(30, 50, 200))
   
   # Create an empty list of size 4
   summary_list <- vector("list", length = 4) 
-  
-  # #Keep the mc_seeds which had gamma<=10
-  # 
-  # keep9 = which(abs(as.numeric(est_list$age9[1,]))<10)
-  # keep13 = which(abs(as.numeric(est_list$age13[1,]))<10)
-  # keep17 = which(abs(as.numeric(est_list$age17[1,]))<10)
-  # keep23 = which(abs(as.numeric(est_list$age23[1,]))<10)
-  # 
-  # stdest_list$age9 = stdest_list$age9[, keep9] 
-  # stdest_list$age13 = stdest_list$age13[, keep13] 
-  # stdest_list$age17 = stdest_list$age17[, keep17] 
-  # stdest_list$age23 = stdest_list$age23[, keep23] 
-  # 
-  # JS_stdest_list$age9 = JS_stdest_list$age9[, keep9]
-  # JS_stdest_list$age13 = JS_stdest_list$age13[, keep13]
-  # JS_stdest_list$age17 = JS_stdest_list$age17[, keep17]
-  # JS_stdest_list$age23 = JS_stdest_list$age23[, keep23]
-  
-  
+
   for(age in ages)
   {
     age_ind = which(ages %in% age)
@@ -230,30 +193,9 @@ for(N in c(30, 50, 200))
     est = apply(est_list[[age_ind]], MARGIN = 1, function(x){mean(x, na.rm = T)  })#[-c(1:n_intercept)]
     SE_est = apply(est_list[[age_ind]], MARGIN = 1, function(x){sd(x, na.rm = T)  }) #[-c(1:n_intercept)]
     
-    # stdest = apply(stdest_list[[age_ind]], MARGIN = 1, function(x){mean(x, na.rm = T)  })#[-c(1:n_intercept)]
-    # JS_stdest = apply(JS_stdest_list[[age_ind]], MARGIN = 1, function(x){mean(x, na.rm = T)  })/sqrt(N) #[-c(1:n_intercept)]/sqrt(N)
-    # 
-    # SE_stdest = apply(stdest_list[[age_ind]], MARGIN = 1, function(x){sd(x, na.rm = T)  })/sqrt(N) #[-c(1:n_intercept)]
-    # SE_JS_stdest = apply(JS_stdest_list[[age_ind]], MARGIN = 1, function(x){sd(x, na.rm = T)  })/sqrt(N) #[-c(1:n_intercept)]
-    
-    
-    #Get true target
-    # trueTarget = load(paste0(path_prefix, "somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N10000/",
-    #                          "severity", "/independence,independence/age", age, "/std_coef_sev_MC_2.Rdata"))
-    # assign("trueTarget", get(trueTarget))
-    # trueTarget = trueTarget[-c(1,2),]
-    
-    trueTarget = load(paste0(path_prefix, "somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N10000/",
+    trueTarget = load(paste0(path_prefix, "path/to/Fluorosis/Results/06_simulation/N10000/",
                              "severity", "/independence,independence/age", age, "/coef_sev_MC_2.Rdata"))
     assign("trueTarget", get(trueTarget))
-    
-    # if(model=="presence")
-    # {
-    #   trueTarget = trueTarget[-c(1),]
-    # }else if(model=="severity")
-    # {
-      trueTarget = trueTarget[-c(1,2),]
-    #}
     
       temp_df = data.frame(Variable = trueTarget$Variables,
                            #Pre_JS_Estimate = stdest[-c(1:3)],
@@ -275,28 +217,19 @@ for(N in c(30, 50, 200))
   
   names(summary_list) = paste0("age", ages)
   
-  
   ########################
   ### Save the outputs ###
   ########################
   
-  setwd(paste0(path_prefix, "somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N", N, "/", 
+  setwd(paste0(path_prefix, "path/to/Fluorosis/Results/06_simulation/N", N, "/", 
                model, "/"))
   
   save(summary_list, file=paste0("combined_severity_summarytable_raw_est_", model,"_", corstr_pres, ",", corstr_sev, ".Rdata"))
   
   
-  #if(corstr_sev %in% c("ar1", "exchangeable"))
-  #{
-  #  save(sev_rho_vec, file=paste0("combined_severity_rho_", model,"_", corstr_pres, ",", corstr_sev, ".Rdata"))
-  #}
+ 
 
   write.xlsx(summary_list, file = paste0("summarytable_raw_est_", model,"_severity_", corstr_pres, ",", corstr_sev, "_N_", N, ".xlsx"), 
              sheetNames = names(summary_list))
-  
-  #View(summary_list$age9)
-  #View(summary_list$age13)
-  #View(summary_list$age17)
-  #View(summary_list$age23)
   
 }
