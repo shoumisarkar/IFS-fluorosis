@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ages=(23) #(9 13 17 23) #(9 13 17 23)
+ages=(9 13 17 23)
 
 for mc_seed in {1..100} 
 do
