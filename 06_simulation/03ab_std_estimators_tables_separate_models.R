@@ -10,7 +10,7 @@ if (!is.na(Sys.getenv("SLURM_JOB_ID", unset = NA))) {
   path_prefix = "/blue/"
 }
 
-setwd(paste0(path_prefix, "somnath.datta/shoumisarkar/Fluorosis/"))
+setwd(paste0(path_prefix, "path/to/Fluorosis/"))
 source(file = "Codes/functions.R")
 
 # corstr_pres = "jackknifed" 
@@ -47,7 +47,7 @@ for(model in models)
     
     for(mc_seed in mc_seed_range)
     {
-      setwd(paste0(path_prefix, "somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N", N, "/", 
+      setwd(paste0(path_prefix, "path/to/Fluorosis/Results/06_simulation/N", N, "/", 
                    model, "/", corstr_pres, ",", corstr_sev, "/age9"))
       
       fn_est = paste0("coef_pres_MC_", mc_seed, ".Rdata")
@@ -78,7 +78,7 @@ for(model in models)
     {
       age_ind = which(ages %in% age)
       
-      setwd(paste0(path_prefix, "somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N", N, "/", 
+      setwd(paste0(path_prefix, "path/to/Fluorosis/Results/06_simulation/N", N, "/", 
                    model, "/", corstr_pres, ",", corstr_sev, "/age", age))
       
       
@@ -228,7 +228,7 @@ for(model in models)
       
       prefix = ifelse(model=="severity", "sev", "pres")
       
-      trueTarget = load(paste0(path_prefix, "somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N10000/",
+      trueTarget = load(paste0(path_prefix, "path/to/Fluorosis/Results/06_simulation/N10000/",
                                model, "/independence,independence/age", age, "/std_coef_", prefix, "_MC_2.Rdata"))
       assign("trueTarget", get(trueTarget))
       
@@ -284,35 +284,11 @@ for(model in models)
     ### Save the outputs ###
     ########################
     
-    setwd(paste0(path_prefix, "somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N", N, "/", 
+    setwd(paste0(path_prefix, "path/to/Fluorosis/Results/06_simulation/N", N, "/", 
                  model, "/"))
-    
-    # save(est_list, file=paste0("aggreg_est_", model,"_", corstr_pres, ",", corstr_sev, ".Rdata"))
-    # save(stdest_list, file=paste0("aggreg_stdest_", model,"_", corstr_pres, ",", corstr_sev, ".Rdata"))
-    # save(JS_stdest_list, file=paste0("aggreg_JS_stdest_", model,"_", corstr_pres, ",", corstr_sev, ".Rdata"))
-    save(summary_list, file=paste0("summarytable_std_estimates_", model,"_", corstr_pres, ",", corstr_sev, ".Rdata"))
-    
-    # if(model=="presence")
-    # {
-    #   if(corstr_pres %in% c("ar1", "exchangeable"))
-    #   {
-    #     save(rho_vec, file=paste0("pres_rho_", model,"_", corstr_pres, ",", corstr_sev, ".Rdata"))
-    #   }
-    # }else if(model=="severity")
-    # {
-    #   if(corstr_sev %in% c("ar1", "exchangeable"))
-    #   {
-    #     save(rho_vec, file=paste0("sev_rho_", model,"_", corstr_pres, ",", corstr_sev, ".Rdata"))
-    #   }
-    # }
     
     write.xlsx(summary_list, file = paste0("summarytable_std_estimates_", model,"_", corstr_pres, ",", corstr_sev, "_N_", N, ".xlsx"), 
                sheetNames = names(summary_list))
-    
-    #View(summary_list$age9)
-    #View(summary_list$age13)
-    #View(summary_list$age17)
-    #View(summary_list$age23)
     
   }
 }
