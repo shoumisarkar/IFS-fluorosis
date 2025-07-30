@@ -19,15 +19,15 @@ is_signif = T
 #mc_seed = 1 #change this as needed
 #age = 23 #change this as needed
 
-corstr_pres = "independence" #"jackknifed" #"jackknifed" # "exchangeable" #"independence"
-corstr_sev = "independence" #"jackknifed" #"jackknifed" # "exchangeable"  #"independence" #"exchangeable"
+corstr_pres = "independence" #"jackknifed" # "exchangeable" #"independence"
+corstr_sev = "independence" #"jackknifed" # "exchangeable"  #"independence"
 
 exch_rho_pres = 0.3 #0.3 #0.6
 exch_rho_sev = 0.8 #0.8 #0.6
 
 print(paste0(corstr_pres, ",", corstr_sev, ",", exch_rho_pres, "," , exch_rho_sev))
 
-setwd("/blue/somnath.datta/shoumisarkar/Fluorosis")
+setwd("/path/to/Fluorosis")
 source("Codes/functions.R")
 
 
@@ -37,14 +37,14 @@ print(paste0("Running with MC seed ", mc_seed))
 
 mode = "severity"
 
-dir.create("/blue/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/PowerStudy")
-dir.create(paste0("/blue/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/PowerStudy/N", N))
-dir.create(paste0("/blue/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/PowerStudy/N", N, "/", mode))
-dir.create(paste0("/blue/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/PowerStudy/N", N, "/", mode, "/",
+dir.create("/path/to/Fluorosis/Results/06_simulation/PowerStudy")
+dir.create(paste0("/path/to/Fluorosis/Results/06_simulation/PowerStudy/N", N))
+dir.create(paste0("/path/to/Fluorosis/Results/06_simulation/PowerStudy/N", N, "/", mode))
+dir.create(paste0("/path/to/Fluorosis/Results/06_simulation/PowerStudy/N", N, "/", mode, "/",
                   corstr_pres, ",", corstr_sev))
-dir.create(paste0("/blue/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/PowerStudy/N", N, "/", mode, "/",
+dir.create(paste0("/path/to/Fluorosis/Results/06_simulation/PowerStudy/N", N, "/", mode, "/",
                   corstr_pres, ",", corstr_sev, "/age", age))
-path = paste0("/blue/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/PowerStudy/N", N, "/", mode, "/",
+path = paste0("/path/to/Fluorosis/Results/06_simulation/PowerStudy/N", N, "/", mode, "/",
               corstr_pres, ",", corstr_sev, "/age", age, "/coef_pres_MC_", mc_seed, ".Rdata")
 
 
@@ -98,7 +98,7 @@ if(file.exists(path))
   
   sim_varnames = c("gamma", "alpha", "alpha_1|2", "alpha_2|3", colnames(MC_dataset)[-c(1:2)]) #variable names
   
-  obj = load(paste0("/blue/somnath.datta/shoumisarkar/Fluorosis/Results/05a_combined_presence_modelling/exchangeable,exchangeable/whole_data_based/coefs_pres_age9.RData"))
+  obj = load(paste0("/path/to/Fluorosis/Results/05a_combined_presence_modelling/exchangeable,exchangeable/whole_data_based/coefs_pres_age9.RData"))
   assign("coef_obj", get(obj))
   
   true_params = coef_obj[coef_obj$Variables %in% sim_varnames,2] #these are the true values we need.
@@ -106,17 +106,7 @@ if(file.exists(path))
   
   true_params[5] = 0 #Set Avg_homeppm to 0
   
-  ### here : need to specify params such that FRI=1 gets generated...
-  
-  #try this:
-  #true_params[8] = 10
-  #true_params[11] = -10
-  
-  
   temp = update_MC_dataset(MC_dataset, mc_seed)
-  
-  #table(temp$FRI_Score)
-  
   
   if(length(unique(temp$FRI_Score))!=4)
   {
@@ -135,24 +125,7 @@ if(file.exists(path))
     }
   }
   
-  
-  
   if(all(c(1,2) %in% unique(temp$FRI_Score))){
-    
-    MC_dataset = temp 
-    # MC_output = fit_GEE_severity(dat=MC_dataset, corstr_sev = corstr_sev, kappa=0.25, maxIter = 10)
-    # 
-    # coef_sev = MC_output$coefs
-    # rho_sev = 1
-    # 
-    # JK_corr_mat_sev = NA
-    # 
-    # if(corstr_sev=="ar1" || corstr_sev=="exchangeable"){  
-    #   rho_sev = MC_output$rho_sev
-    # }else if(corstr_sev=="jackknifed")
-    # {
-    #   JK_corr_mat_sev = MC_output$JK_corr_mat_sev
-    # }
     
     ##############################
     ## Bootstrapping to get CIs ##
@@ -180,15 +153,6 @@ if(file.exists(path))
       
       if(all(c(1,2) %in% unique(bs_dataset$FRI_Score)))
       {
-        
-        # tryCatch({
-        #   bs_output <- fit_GEE_severity(dat = bs_dataset, corstr_sev = corstr_sev, kappa = 0.25, maxIter = 10)
-        #   coef_sev_BS[-c(1,2), b] <- bs_output$coefs$Estimates
-        # }, error = function(e) {
-        #   message(sprintf("Bootstrap iteration %d failed: %s", b, e$message))
-        #   # Optionally, you could store NA or some flag:
-        #   coef_sev_BS[-c(1,2), b] <- NA
-        # })  
         
         tryCatch({
           # Fit severity model with timeout protection
@@ -224,7 +188,7 @@ if(file.exists(path))
       is_signif = F
     }
     
-    setwd(paste0("/blue/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/PowerStudy/N", N, "/", mode, "/",
+    setwd(paste0("/path/to/Fluorosis/Results/06_simulation/PowerStudy/N", N, "/", mode, "/",
                  corstr_pres, ",", corstr_sev, "/age", age))
     
     
