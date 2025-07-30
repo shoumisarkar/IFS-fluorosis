@@ -17,12 +17,11 @@ library(openxlsx)
 # Check if running in a SLURM environment
 if (!is.na(Sys.getenv("SLURM_JOB_ID", unset = NA))) {
   # If in SLURM environment
-  setwd("/blue/somnath.datta/shoumisarkar/Fluorosis/")
+  setwd("/inSLURM/path/to/Fluorosis/")
 } else {
   # If not in SLURM environment
-  setwd("W:/somnath.datta/shoumisarkar/Fluorosis/")
+  setwd("/nonSLURM/path/to/Fluorosis/")
 }
-
 
 ages = c(9, 13, 17, 23)
 
@@ -43,7 +42,7 @@ for(corstr in corstrs)
       corstr2 = paste0(corstr, ",", corstr)
     }
     
-    filepath = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/", model_type, "/",
+    filepath = paste0("path/to/Fluorosis/Results/", model_type, "/",
                       corstr2, "/whole_data_based/rho_", type, "_age", age, ".RData")
     
     obj_rho <- load(filepath)
@@ -59,7 +58,7 @@ for(corstr in corstrs)
 
 #View(rho_df)
 
-filepath2 = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/",
+filepath2 = paste0("path/to/Fluorosis/Results/",
                    model_type, "/summary_rho.xlsx")
 write_xlsx(rho_df, path = filepath2)
 
