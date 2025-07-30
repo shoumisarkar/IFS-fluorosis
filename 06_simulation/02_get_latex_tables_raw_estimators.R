@@ -34,7 +34,7 @@ for(age in ages)
   library(xtable)
   
   # Create a .tex file to store the output
-  tex_file <- paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/raw_tables_", corstr_pres,
+  tex_file <- paste0("path/to/Fluorosis/Results/06_simulation/raw_tables_", corstr_pres,
                      ",", corstr_sev, "_age", age, ".tex")
   sink(tex_file)
   
@@ -43,16 +43,16 @@ for(age in ages)
   #########################
   
   #load the presence RData file
-  filename = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N30/presence/summarytable_raw_est_presence_",
+  filename = paste0("path/to/Fluorosis/Results/06_simulation/N30/presence/summarytable_raw_est_presence_",
                     corstr_pres, ",", corstr_sev, ".RData")
   obj = load(filename); assign("table30", get(obj))
   
-  filename = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N50/presence/summarytable_raw_est_presence_",
+  filename = paste0("path/to/Fluorosis/Results/06_simulation/N50/presence/summarytable_raw_est_presence_",
                     corstr_pres, ",", corstr_sev, ".RData")
   obj = load(filename); assign("table50", get(obj))
   
   
-  filename = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N200/presence/summarytable_raw_est_presence_",
+  filename = paste0("path/to/Fluorosis/Results/06_simulation/N200/presence/summarytable_raw_est_presence_",
                     corstr_pres, ",", corstr_sev, ".RData")
   obj = load(filename); assign("table200", get(obj))
   
@@ -92,10 +92,6 @@ for(age in ages)
   
   cat("Variable & Estimate & Bias & SE & MSE & Estimate & Bias & SE & MSE & Estimate & Bias & SE & MSE \\\\ \n")
   
-  # Print the table body without column names
-  #print(xtable(table[[age_ind]], align = c("l", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c")), 
-  #      include.rownames = FALSE, include.colnames = FALSE, type = "latex", only.contents = TRUE)
-  
   table[[age_ind]][, -1] <- lapply(table[[age_ind]][, -1], as.numeric)
   
   print(xtable(table[[age_ind]], 
@@ -118,16 +114,16 @@ for(age in ages)
   #########################
   
   #load the presence RData file
-  filename = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N30/severity/summarytable_raw_est_severity_",
+  filename = paste0("path/to/Fluorosis/Results/06_simulation/N30/severity/summarytable_raw_est_severity_",
                     corstr_pres, ",", corstr_sev, ".RData")
   obj = load(filename); assign("table30", get(obj))
   
-  filename = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N50/severity/summarytable_raw_est_severity_",
+  filename = paste0("path/to/Fluorosis/Results/06_simulation/N50/severity/summarytable_raw_est_severity_",
                     corstr_pres, ",", corstr_sev, ".RData")
   obj = load(filename); assign("table50", get(obj))
   
   
-  filename = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N200/severity/summarytable_raw_est_severity_",
+  filename = paste0("path/to/Fluorosis/Results/06_simulation/N200/severity/summarytable_raw_est_severity_",
                     corstr_pres, ",", corstr_sev, ".RData")
   obj = load(filename); assign("table200", get(obj))
   
@@ -154,8 +150,6 @@ for(age in ages)
   cat("Variable & Estimate & Bias & SE & MSE & Estimate & Bias & SE & MSE & Estimate & Bias & SE & MSE \\\\ \n")
   
   # Print the table body without column names
-  #print(xtable(table[[age_ind]], align = c("l", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c")), 
-  #      include.rownames = FALSE, include.colnames = FALSE, type = "latex", only.contents = TRUE)
   
   table[[age_ind]][, -1] <- lapply(table[[age_ind]][, -1], as.numeric)
   
@@ -178,16 +172,16 @@ for(age in ages)
   ##################################
   
   #load the presence RData file
-  filename = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N30/combined/combined_presence_summarytable_raw_est_combined_",
+  filename = paste0("path/to/Fluorosis/Results/06_simulation/N30/combined/combined_presence_summarytable_raw_est_combined_",
                     corstr_pres, ",", corstr_sev, ".RData")
   obj = load(filename); assign("table30", get(obj))
   
-  filename = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N50/combined/combined_presence_summarytable_raw_est_combined_",
+  filename = paste0("path/to/Fluorosis/Results/06_simulation/N50/combined/combined_presence_summarytable_raw_est_combined_",
                     corstr_pres, ",", corstr_sev, ".RData")
   obj = load(filename); assign("table50", get(obj))
   
   
-  filename = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N200/combined/combined_presence_summarytable_raw_est_combined_",
+  filename = paste0("path/to/Fluorosis/Results/06_simulation/N200/combined/combined_presence_summarytable_raw_est_combined_",
                     corstr_pres, ",", corstr_sev, ".RData")
   obj = load(filename); assign("table200", get(obj))
   
@@ -237,16 +231,16 @@ for(age in ages)
   ##################################
   
   #load the presence RData file
-  filename = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N30/combined/combined_severity_summarytable_raw_est_combined_",
+  filename = paste0("path/to/Fluorosis/Results/06_simulation/N30/combined/combined_severity_summarytable_raw_est_combined_",
                     corstr_pres, ",", corstr_sev, ".RData")
   obj = load(filename); assign("table30", get(obj))
   
-  filename = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N50/combined/combined_severity_summarytable_raw_est_combined_",
+  filename = paste0("path/to/Fluorosis/Results/06_simulation/N50/combined/combined_severity_summarytable_raw_est_combined_",
                     corstr_pres, ",", corstr_sev, ".RData")
   obj = load(filename); assign("table50", get(obj))
   
   
-  filename = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N200/combined/combined_severity_summarytable_raw_est_combined_",
+  filename = paste0("path/to/Fluorosis/Results/06_simulation/N200/combined/combined_severity_summarytable_raw_est_combined_",
                     corstr_pres, ",", corstr_sev, ".RData")
   obj = load(filename); assign("table200", get(obj))
   
@@ -273,8 +267,6 @@ for(age in ages)
   cat("Variable & Estimate & Bias & SE & MSE & Estimate & Bias & SE & MSE & Estimate & Bias & SE & MSE \\\\ \n")
   
   # Print the table body without column names
-  #print(xtable(table[[age_ind]], align = c("l", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c")), 
-  #      include.rownames = FALSE, include.colnames = FALSE, type = "latex", only.contents = TRUE)
   
   table[[age_ind]][, -1] <- lapply(table[[age_ind]][, -1], as.numeric)
   
