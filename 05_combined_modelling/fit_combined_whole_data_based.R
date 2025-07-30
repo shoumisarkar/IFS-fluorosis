@@ -1,6 +1,3 @@
-#############################################
-####### Set up age, corstr_sev, kappa ######
-#############################################
 
 #Read the age and corstr_sev
 args = commandArgs(trailingOnly=TRUE) #read in age (9,13,17,23) as needed for time-specific results
@@ -27,10 +24,10 @@ inSLURM = !is.na(Sys.getenv("SLURM_JOB_ID", unset = NA))
 # Check if running in a SLURM environment
 if (inSLURM) {
   # If in SLURM environment
-  setwd("/blue/somnath.datta/shoumisarkar/Fluorosis/")
+  setwd("/inSLURM/path/to/Fluorosis/")
 } else {
   # If not in SLURM environment
-  setwd("W:/somnath.datta/shoumisarkar/Fluorosis/")
+  setwd("/nonSLURM/path/to/Fluorosis/")
 }
 
 source(file = "Codes/functions.R")
@@ -208,9 +205,9 @@ if(corstr_sev=="ar1" || corstr_sev=="exchangeable")
 
 }
 
-##################################################
-###### Get SD of the jackknifed estimators #######
-##################################################
+################################
+###### Get jackknifed SD #######
+################################
 
 JK_SD_pres = data.frame(apply(combined_coefs_JK_pres, MARGIN=1, FUN= compute_JK_SE))
 colnames(JK_SD_pres) = "SD"
