@@ -1,6 +1,6 @@
 # IFS-fluorosis
 
-Code files for our manuscript, "Analyzing zero-inflated clustered longitudinal ordinal outcomes using GEE-type models with an application to dental fluorosis studies" by Shoumi Sarkar, Anish Mukherjee, Jeremy T.Gaskins, Steven Levy, Peihua Qiu and Somnath Datta.
+Code files for our manuscript, "Analyzing zero-inflated clustered longitudinal ordinal outcomes using GEE-type models with an application to dental fluorosis studies" by Shoumi Sarkar, Anish Mukherjee, Jeremy T. Gaskins, Steven Levy, Peihua Qiu, and Somnath Datta.
 
 `01_exploratory_analyses` contains codes to obtain relative frequency barplots of FRI scores across different ages.
 
