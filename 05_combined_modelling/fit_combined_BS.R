@@ -29,10 +29,10 @@ inSLURM = !is.na(Sys.getenv("SLURM_JOB_ID", unset = NA))
 # Check if running in a SLURM environment
 if (inSLURM) {
   # If in SLURM environment
-  setwd("/blue/somnath.datta/shoumisarkar/Fluorosis/")
+  setwd("/inSLURM/path/Fluorosis/")
 } else {
   # If not in SLURM environment
-  setwd("W:/somnath.datta/shoumisarkar/Fluorosis/")
+  setwd("nonSLURM/path/Fluorosis/")
 }
 
 filename = paste0("Results/05a_combined_presence_modelling/", corstr_pres, ",", corstr_sev,
@@ -243,9 +243,9 @@ if(!file.exists(filename))
       save(rho_sev_JK, file = filename)
     }
     
-    ##################################################
-    ###### Get SD of the jackknifed estimators #######
-    ##################################################
+    ################################
+    ###### Get jackknifed SD #######
+    ################################
     
     JK_SD_pres = data.frame(apply(combined_coefs_JK_pres, MARGIN=1, FUN= compute_JK_SE))
     colnames(JK_SD_pres) = "SD"
