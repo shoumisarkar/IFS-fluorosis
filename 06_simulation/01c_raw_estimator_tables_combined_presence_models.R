@@ -9,7 +9,7 @@ if (!is.na(Sys.getenv("SLURM_JOB_ID", unset = NA))) {
   path_prefix = "/blue/"
 }
 
-setwd(paste0(path_prefix, "somnath.datta/shoumisarkar/Fluorosis/"))
+setwd(paste0(path_prefix, "path/to/Fluorosis/"))
 source(file = "Codes/functions.R")
 
 model = "combined"
@@ -42,7 +42,7 @@ for(N in c(30, 50, 200))
   
   for(mc_seed in mc_seed_range)
   {
-    setwd(paste0(path_prefix, "somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N", N, "/", 
+    setwd(paste0(path_prefix, "path/to/Fluorosis/Results/06_simulation/N", N, "/", 
                  model, "/", corstr_pres, ",", corstr_sev, "/age9"))
     
     fn_est = paste0("coef_pres_MC_", mc_seed, ".Rdata")
@@ -76,7 +76,7 @@ for(N in c(30, 50, 200))
   {
     age_ind = which(ages %in% age)
     
-    setwd(paste0(path_prefix, "somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N", N, "/", 
+    setwd(paste0(path_prefix, "path/to/Fluorosis/Results/06_simulation/N", N, "/", 
                  model, "/", corstr_pres, ",", corstr_sev, "/age", age))
     
     
@@ -120,15 +120,6 @@ for(N in c(30, 50, 200))
           warning("Failed to load or assign from fn_stdest: ", e$message)
           stdest_df[, mc_seed] <- NA  # Assign NA to this column if there's an error
         })
-        
-        
-        
-        #if(corstr_pres %in% c("exchangeable", "ar1"))
-        #  {
-        #    obj = load(fn_rho)
-        #    assign("rho", get(obj))
-        #    pres_rho_vec = c(pres_rho_vec, rho)
-        #  }
         
       }
     }
@@ -207,33 +198,7 @@ for(N in c(30, 50, 200))
     
     est = apply(est_list[[age_ind]], MARGIN = 1, function(x){mean(x, na.rm = T)  })#[-c(1:n_intercept)]
     SE_est = apply(est_list[[age_ind]], MARGIN = 1, function(x){sd(x, na.rm = T)  }) #[-c(1:n_intercept)]
-    
-    # stdest = apply(stdest_list[[age_ind]], MARGIN = 1, function(x){mean(x, na.rm = T)  })#[-c(1:n_intercept)]
-    # JS_stdest = apply(JS_stdest_list[[age_ind]], MARGIN = 1, function(x){mean(x, na.rm = T)  })/sqrt(N) #[-c(1:n_intercept)]/sqrt(N)
-    # 
-    # SE_stdest = apply(stdest_list[[age_ind]], MARGIN = 1, function(x){sd(x, na.rm = T)  })/sqrt(N) #[-c(1:n_intercept)]
-    # SE_JS_stdest = apply(JS_stdest_list[[age_ind]], MARGIN = 1, function(x){sd(x, na.rm = T)  })/sqrt(N) #[-c(1:n_intercept)]
-    
-    #Get true target
-    
-    # trueTarget = load(paste0(path_prefix, "somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N10000/",
-    #                          "presence", "/independence,independence/age", age, "/std_coef_pres_MC_2.Rdata"))
-    # assign("trueTarget", get(trueTarget))
-    # trueTarget = trueTarget[-c(1),]
-    
-    trueTarget = load(paste0(path_prefix, "somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N10000/",
-                             "presence", "/independence,independence/age", age, "/coef_pres_MC_2.Rdata"))
-    assign("trueTarget", get(trueTarget))
-    
-    # if(model=="presence")
-    # {
-      trueTarget = trueTarget[-c(1),]
-      
-    # }else if(model=="severity")
-    # {
-    #   trueTarget = trueTarget[-c(1,2),]
-    # }
-    
+
     temp_df = data.frame(Variable = trueTarget$Variables,
          
                          #Pre_JS_Estimate = stdest[-c(1:3)],
@@ -260,23 +225,12 @@ for(N in c(30, 50, 200))
   ### Save the outputs ###
   ########################
   
-  setwd(paste0(path_prefix, "somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N", N, "/", 
+  setwd(paste0(path_prefix, "path/to/Fluorosis/Results/06_simulation/N", N, "/", 
                model, "/"))
   
   save(summary_list, file=paste0("combined_presence_summarytable_raw_est_", model,"_", corstr_pres, ",", corstr_sev, ".Rdata"))
   
-  
-  #if(corstr_pres %in% c("ar1", "exchangeable"))
-  #  {
-  #    save(pres_rho_vec, file=paste0("combined_presence_rho_", model,"_", corstr_pres, ",", corstr_sev, ".Rdata"))
-  #  }
-  
   write.xlsx(summary_list, file = paste0("summarytable_raw_est_", model,"_presence_", corstr_pres, ",", corstr_sev, "_N_", N, ".xlsx"), 
              sheetNames = names(summary_list))
-  
-  #View(summary_list$age9)
-  #View(summary_list$age13)
-  #View(summary_list$age17)
-  #View(summary_list$age23)
-  
+
 }
