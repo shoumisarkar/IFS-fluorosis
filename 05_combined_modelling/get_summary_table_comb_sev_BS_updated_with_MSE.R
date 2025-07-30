@@ -70,7 +70,7 @@ ages <- c(9, 13, 17, 23)
 B <- 120
 vars <- c("dental_age", "Total_mgF", "SugarAddedBeverageOzPerDay", "BrushingFrequencyPerDay",
           "Avg_homeppm", "Prop_DentAppt", "Prop_FluorideTreatment", "Tooth8", "Tooth9",
-          "Tooth10", "ZoneM", "ZoneI", "ZoneO"   )
+          "Tooth10", "ZoneM", "ZoneI", "ZoneE"   )
 
 stdcoefs_BS_list <- lapply(ages, process_age_data, B = B, corstr_pres = corstr_pres, corstr_sev = corstr_sev, vars = vars)
 names(stdcoefs_BS_list) <- paste0("age", ages)
