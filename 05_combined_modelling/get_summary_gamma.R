@@ -1,8 +1,3 @@
-
-
-#corstr_pres = "independence"
-#corstr_sev = "independence"
-
 library(openxlsx)
 
 # Check if running in a SLURM environment
@@ -11,7 +6,7 @@ if (!is.na(Sys.getenv("SLURM_JOB_ID", unset = NA))) {
   setwd("/blue/somnath.datta/shoumisarkar/Fluorosis/")
 } else {
   # If not in SLURM environment
-  setwd("W:/somnath.datta/shoumisarkar/Fluorosis/")
+  setwd("path/to/Fluorosis/")
 }
 
 
@@ -28,7 +23,7 @@ for(corstr in corstrs)
   for(age in ages)
   {
     
-    filepath = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/05a_combined_presence_modelling/",
+    filepath = paste0("path/to/Fluorosis/Results/05a_combined_presence_modelling/",
                       corstr, ",", corstr, "/whole_data_based/coefs_pres_age", age, ".RData")
     
     obj_coef <- load(filepath)
@@ -46,6 +41,5 @@ for(corstr in corstrs)
 #View(gamma_df)
 
 library(writexl)
-
-filepath2 = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/05a_combined_presence_modelling/summary_gamma.xlsx")
+filepath2 = paste0("path/to/Fluorosis/Results/05a_combined_presence_modelling/summary_gamma.xlsx")
 write_xlsx(gamma_df, path = filepath2)
