@@ -3,10 +3,10 @@ library(openxlsx)
 # Check if running in a SLURM environment
 if (!is.na(Sys.getenv("SLURM_JOB_ID", unset = NA))) {
   # If in SLURM environment
-  setwd("/blue/somnath.datta/shoumisarkar/Fluorosis/")
+  setwd("inSLURM/path/to/Fluorosis/")
 } else {
   # If not in SLURM environment
-  setwd("W:/somnath.datta/shoumisarkar/Fluorosis/")
+  setwd("SLURM/path/to/Fluorosis/")
 }
 
 source(file = "Codes/functions.R")
@@ -40,14 +40,14 @@ write_table_to_excel <- function(CI_list, corstr_pres, corstr_sev, conf_level) {
     writeData(wb, sheet = name, CI_list[[name]])
   }
   
-  saveWorkbook(wb, paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/05b_combined_severity_modelling/",
+  saveWorkbook(wb, paste0("path/to/Fluorosis/Results/05b_combined_severity_modelling/",
                           conf_level, "_table_", corstr_pres, ",", corstr_sev, ".xlsx"), overwrite = TRUE)
 }
 
 # Function to perform bootstrapping and save CI results
 process_age_data <- function(age, B, corstr_pres, corstr_sev, vars) {
   stdcoefs_BS_mat <- matrix(NA, nrow = length(vars), ncol = B)
-  path <- paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/05b_combined_severity_modelling/",
+  path <- paste0("path/to/Fluorosis/Results/05b_combined_severity_modelling/",
                  corstr_pres, ",", corstr_sev, "/bootstrapping/age", age, "/")
   
   for (b in 1:B) {
@@ -119,13 +119,13 @@ se_sev_list = list()
 
 for(age in ages)
 {
-  path1 = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/05b_combined_severity_modelling/", corstr_pres,
+  path1 = paste0("path/to/Fluorosis/Results/05b_combined_severity_modelling/", corstr_pres,
                  ",", corstr_sev, "/whole_data_based/coefs_sev_age", age, ".RData")
   obj_coef_sev <- load(path1)
   assign("coef_sev", get(obj_coef_sev))
   
   
-  path2 = paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/05b_combined_severity_modelling/", corstr_pres, 
+  path2 = paste0("path/to/Fluorosis/Results/05b_combined_severity_modelling/", corstr_pres, 
                  ",", corstr_sev, "/whole_data_based/JK_SD_sev_age", age, ".RData")
   obj_se_sev <- load(path2)
   assign("se_sev", get(obj_se_sev))
@@ -247,14 +247,15 @@ summary_95 = create_summary_table(95)
 
 write_table_to_excel(summary_95, corstr_pres, corstr_sev, 95)
 
-
-#Write latex tables:
-
+#########################################################
+######### Write latex code for Overleaf tables: #########
+#########################################################
+                                   
 library(xtable)
 
 write_table_to_latex <- function(my_list, corstr_pres, corstr_sev, conf_level) {
   # Create a .tex file to store the output
-  tex_file <- paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/05b_combined_severity_modelling/", 
+  tex_file <- paste0("path/to/Fluorosis/Results/05b_combined_severity_modelling/", 
                      conf_level, "_table_", corstr_pres, ",", corstr_sev, ".tex")
   sink(tex_file)
   
