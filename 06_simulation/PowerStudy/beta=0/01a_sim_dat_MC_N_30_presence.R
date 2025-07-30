@@ -104,13 +104,6 @@ if(file.exists(path))
   names(true_params) = sim_varnames
   
   true_params[5] = 0 #Set Avg_homeppm to 0
-  
-  ### here : need to specify params such that FRI=1 gets generated...
-  
-  #try this:
-  #true_params[8] = 10
-  #true_params[11] = -10
-  
 
   temp = update_MC_dataset(MC_dataset, mc_seed)
   
@@ -207,12 +200,6 @@ if(file.exists(path))
   
     save(is_signif, file = paste0("is_signif_MC_", mc_seed, ".Rdata") )
     save(bs_Avghomeppm, file = paste0("bs_Avghomeppm_MC_", mc_seed, ".Rdata") )
-    
-    # if(corstr_pres=="ar1" || corstr_pres=="exchangeable")
-    # { save(rho_pres, file = paste0("rho_pres_MC_", mc_seed, ".Rdata") )
-    #   #save(rho_pres_JK, file = paste0("rho_pres_JK_MC_", mc_seed, ".Rdata") )
-    # }
-    
     
   }else{
     print("MC dataset lacks both 0/1 FRI Scores.")
