@@ -9,7 +9,7 @@ corstrs = paste(corstrs, corstrs, sep=",")
 model_names = paste("C", 1:4, 1:4, sep=".")
 
 #Get variable names
-temp = read_xlsx(paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/05b_combined_severity_modelling/95_table_",
+temp = read_xlsx(paste0("path/to/Fluorosis/Results/05b_combined_severity_modelling/95_table_",
                         "ar1,ar1", ".xlsx"), sheet = 1)
 vars = temp$Variable
 
@@ -26,7 +26,7 @@ for(age in ages)
   
   for(corstr in corstrs)
   {
-    temp = read_xlsx(paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/05b_combined_severity_modelling/95_table_",
+    temp = read_xlsx(paste0("path/to/Fluorosis/Results/05b_combined_severity_modelling/95_table_",
                             corstr, ".xlsx"), sheet = age_ind)
     
     corstr_ind = which(corstrs %in% corstr)
@@ -46,11 +46,15 @@ overall_result <- RankAggreg(age_wise_mat, 4, method="CE", distance="Spearman", 
 all_outputs = rbind(age_wise_mat, Overall = overall_result$top.list); colnames(all_outputs) = paste0("Rank ", 1:4)
 all_outputs
 
+################################################
+#### Write latex codes for Overleaf tables #####
+################################################
+
 library(xtable)
 
 write_table_to_latex <- function(all_outputs) {
   # Create a .tex file to store the output
-  tex_file <- paste0("W:/somnath.datta/shoumisarkar/Fluorosis/Results/05b_combined_severity_modelling/RankAggreg_combined_sev.tex")
+  tex_file <- paste0("path/to/Fluorosis/Results/05b_combined_severity_modelling/RankAggreg_combined_sev.tex")
   sink(tex_file)
   
   corstr_index = which(corstrs %in% corstr)
