@@ -17,14 +17,14 @@ N = 50
 #age = 9 #change this as needed
 
 corstr_pres = "jackknifed" #"jackknifed" # "exchangeable" #"independence"
-corstr_sev = "jackknifed" #"jackknifed" # "exchangeable"  #"independence" #"exchangeable"
+corstr_sev = "jackknifed" #"jackknifed" # "exchangeable"  #"independence" 
 
 exch_rho_pres = 0.3
 exch_rho_sev = 0.8
 
 print(paste0(corstr_pres, ",", corstr_sev, ",", exch_rho_pres, "," , exch_rho_sev))
 
-setwd("/blue/somnath.datta/shoumisarkar/Fluorosis")
+setwd("/path/to/Fluorosis")
 source("Codes/functions.R")
 
 
@@ -75,7 +75,7 @@ for(i in 1:N)
 
 sim_varnames = c("gamma", "alpha", "alpha_1|2", "alpha_2|3", colnames(MC_dataset)[-c(1:2)]) #variable names
 
-obj = load(paste0("/blue/somnath.datta/shoumisarkar/Fluorosis/Results/05a_combined_presence_modelling/exchangeable,exchangeable/whole_data_based/coefs_pres_age9.RData"))
+obj = load(paste0("/path/to/Fluorosis/Results/05a_combined_presence_modelling/exchangeable,exchangeable/whole_data_based/coefs_pres_age9.RData"))
 assign("coef_obj", get(obj))
 
 true_params = coef_obj[coef_obj$Variables %in% sim_varnames,2] #these are the true values we need.
@@ -90,7 +90,7 @@ if(all(c(1,2) %in% unique(temp$FRI_Score)))
   
   #Load files...initial estimates of presence, severity:
   
-  path_pres = paste0("/blue/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N",
+  path_pres = paste0("/path/to/Fluorosis/Results/06_simulation/N",
                      N, "/", "presence" , "/", corstr_pres, ",", corstr_sev, "/age", age, "/",
                      "coef_pres_MC_", mc_seed, ".Rdata")
   
@@ -98,7 +98,7 @@ if(all(c(1,2) %in% unique(temp$FRI_Score)))
   sep_pres_coef = sep_pres_coef$Estimates
   
   
-  path_sev = paste0("/blue/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N",
+  path_sev = paste0("/path/to/Fluorosis/Results/06_simulation/N",
                     N, "/", "severity" , "/", corstr_pres, ",", corstr_sev, "/age", age, "/",
                     "coef_sev_MC_", mc_seed, ".Rdata")
   
@@ -196,17 +196,17 @@ if(all(c(1,2) %in% unique(temp$FRI_Score)))
   
   mode = "combined"
   
-  dir.create(paste0("/blue/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N", N))
+  dir.create(paste0("/path/to/Fluorosis/Results/06_simulation/N", N))
   
-  dir.create(paste0("/blue/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N", N, "/", mode))
+  dir.create(paste0("/path/to/Fluorosis/Results/06_simulation/N", N, "/", mode))
   
-  dir.create(paste0("/blue/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N", N, "/", mode, "/",
+  dir.create(paste0("/path/to/Fluorosis/Results/06_simulation/N", N, "/", mode, "/",
                     corstr_pres, ",", corstr_sev))
   
-  dir.create(paste0("/blue/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N", N, "/", mode, "/",
+  dir.create(paste0("/path/to/Fluorosis/Results/06_simulation/N", N, "/", mode, "/",
                     corstr_pres, ",", corstr_sev, "/age", age))
   
-  setwd(paste0("/blue/somnath.datta/shoumisarkar/Fluorosis/Results/06_simulation/N", N, "/", mode, "/",
+  setwd(paste0("/path/to/Fluorosis/Results/06_simulation/N", N, "/", mode, "/",
                corstr_pres, ",", corstr_sev, "/age", age))
   
   save(gamma, file = paste0("gamma_MC_", mc_seed, ".Rdata") )
